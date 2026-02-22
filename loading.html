@@ -5,47 +5,120 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tulip Gardener Loading</title>
-    <!-- Using Poppins exactly as dictated by typography rules -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body class="loading-body">
-    <!-- Glowing Orbs Background reused closely -->
+    <!-- Intro Sparkle Animation -->
+    <div class="intro-sparkle" id="intro-sparkle"></div>
+
+    <!-- Glowing Orbs Background reused exactly -->
     <div class="home-glow-orb top-left"></div>
     <div class="home-glow-orb bottom-right"></div>
     <div class="home-glow-orb center-left"></div>
     <div class="home-glow-orb top-right"></div>
 
     <!-- Main Circle Layout -->
-    <main class="loading-main-card">
+    <main class="loading-main-card" id="main-card">
+
+        <!-- Exterior Floating Text (Hidden until open) -->
+        <div class="lets-go-text" id="lets-go-text">
+            <svg width="250" height="200" viewBox="0 0 250 200">
+                <path id="curve-letsgo" d="M 20,180 Q 80,40 230,20" fill="transparent" />
+                <text font-size="16" fill="transparent" stroke="#B39DCD" stroke-width="1"
+                    style="font-family: 'Georgia', serif; font-style: italic; letter-spacing: 2px;">
+                    <textPath href="#curve-letsgo">Let's goooooooooooooooooooo</textPath>
+                </text>
+            </svg>
+        </div>
 
         <!-- Double Doors -->
-        <div class="loading-door-container">
-            <div class="loading-door left">
+        <div class="loading-door-container" id="door-container" style="cursor: pointer;">
+            <!-- Magical core hidden behind the doors -->
+            <div class="magical-core" id="magical-core">
+                <div class="magical-glow" id="magical-glow"></div>
+
+                <!-- Shimmering particles (added as shining points) -->
+                <div class="particles">
+                    <!-- Many glowing particles with different sizes/floating speeds -->
+                    <div class="particle p1" style="top:20%; left:20%; font-size: 18px;">✦</div>
+                    <div class="particle p2" style="top:80%; left:70%; font-size: 12px; animation-delay: 0.5s;">✧</div>
+                    <div class="particle p3" style="top:50%; left:80%; font-size: 20px; animation-delay: 1.2s;">✦</div>
+                    <div class="particle p4" style="top:70%; left:30%; font-size: 14px; animation-delay: 0.8s;">✧</div>
+                    <div class="particle p5" style="top:15%; left:65%; font-size: 16px; animation-delay: 1.5s;">✦</div>
+                    <div class="particle p6" style="top:85%; left:45%; font-size: 22px; animation-delay: 0.2s;">✧</div>
+                    <div class="particle p7" style="top:40%; left:15%; font-size: 14px; animation-delay: 1.8s;">✦</div>
+                    <div class="particle p8" style="top:30%; left:55%; font-size: 18px; animation-delay: 0.7s;">✧</div>
+                </div>
+
+                <!-- Interior Content (Revealed after glow) -->
+                <div class="interior-ui" id="interior-ui">
+                    <!-- Top Curve Text scaled for 260px width -->
+                    <svg class="curve-top" width="260" height="90" viewBox="0 0 260 90">
+                        <path id="curve-top-path" d="M 30,80 Q 130,-30 230,80" fill="transparent" />
+                        <text font-family="'Poppins', sans-serif" font-size="13" fill="#B39DCD">
+                            <textPath href="#curve-top-path" startOffset="50%" text-anchor="middle">are you new
+                                player....?</textPath>
+                        </text>
+                    </svg>
+
+                    <button class="interior-btn" style="top: 110px;"
+                        onclick="window.location.href='auth.html?mode=signup'">Sign up</button>
+                    <button class="interior-btn" style="top: 170px;"
+                        onclick="window.location.href='auth.html?mode=login'">Login</button>
+
+                    <!-- Bottom Curve Text scaled for 260px width -->
+                    <svg class="curve-bottom" width="260" height="90" viewBox="0 0 260 90">
+                        <path id="curve-bottom-path" d="M 30,20 Q 130,120 230,20" fill="transparent" />
+                        <text font-family="'Poppins', sans-serif" font-size="12" fill="#B39DCD">
+                            <textPath href="#curve-bottom-path" startOffset="50%" text-anchor="middle">Heyy long time no
+                                see....</textPath>
+                        </text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Door Panels -->
+            <div class="loading-door left" id="door-left">
                 <div class="loading-nob"></div>
             </div>
-            <div class="loading-door right">
+            <div class="loading-door right" id="door-right">
                 <div class="loading-nob"></div>
             </div>
         </div>
 
-        <!-- Text -->
-        <div class="loading-text-container">
-            <h2>Open the Door</h2>
-            <div class="loading-dots">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>
+        <!-- "Open the door..." Button (Interactive) -->
+        <button class="open-door-btn" id="open-text-container">Open the door...</button>
 
     </main>
+
+    <script>
+        const openText = document.getElementById('open-text-container');
+        const doorContainer = document.getElementById('door-container');
+        const mainCard = document.getElementById('main-card');
+        const magicalGlow = document.getElementById('magical-glow');
+        const interiorUi = document.getElementById('interior-ui');
+
+        function triggerOpen() {
+            // Prevent double click
+            if (mainCard.classList.contains('is-open')) return;
+
+            // Trigger door swing
+            mainCard.classList.add('is-open');
+
+            // Trigger intense 2-sec glow
+            magicalGlow.style.animation = 'superPulse 2s forwards ease-in-out';
+
+            // Show UI buttons after glow settles (2 seconds)
+            setTimeout(() => {
+                interiorUi.classList.add('visible');
+            }, 2000);
+        }
+
+        openText.addEventListener('click', triggerOpen);
+        doorContainer.addEventListener('click', triggerOpen);
+    </script>
 </body>
 
 </html>

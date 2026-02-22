@@ -837,10 +837,10 @@ body.loading-body {
 .loading-main-card {
     background: var(--loading-card-bg);
     border: 1px solid var(--loading-card-border);
-    border-radius: 50%;
-    /* Perfect circle */
-    width: 440px;
-    height: 440px;
+    border-radius: 250px;
+    /* Wide Pill shape */
+    width: 750px;
+    height: 480px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -854,32 +854,123 @@ body.loading-body {
 
 /* Double Door Layout */
 .loading-door-container {
-    width: 160px;
-    height: 200px;
+    width: 260px;
+    height: 340px;
     display: flex;
     margin-bottom: 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    border: 1px solid #000;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 60px rgba(160, 19, 236, 0.2);
+    border: 2px solid #000;
+    position: relative;
+    perspective: 1200px;
+    /* For 3D door swing effect */
 }
 
+/* Magical core hidden behind doors */
+.magical-core {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(160, 19, 236, 1) 0%, rgba(128, 31, 130, 0.8) 50%, rgba(26, 0, 49, 1) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    /* Behind the doors */
+    overflow: hidden;
+    animation: magicPulse 2s infinite alternate;
+}
+
+.magical-glow {
+    width: 150px;
+    height: 150px;
+    background: #fff;
+    border-radius: 50%;
+    filter: blur(30px);
+    animation: corePulse 1.5s infinite alternate;
+}
+
+.magical-stars {
+    position: absolute;
+    color: #fff;
+    font-size: 20px;
+    animation: spinStars 10s linear infinite;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    pointer-events: none;
+}
+
+@keyframes magicPulse {
+    0% {
+        filter: brightness(1) hue-rotate(0deg);
+    }
+
+    100% {
+        filter: brightness(1.3) hue-rotate(15deg);
+        box-shadow: inset 0 0 40px rgba(160, 19, 236, 0.8);
+    }
+}
+
+@keyframes corePulse {
+    0% {
+        transform: scale(0.6);
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: scale(1.3);
+        opacity: 1;
+    }
+}
+
+@keyframes spinStars {
+    0% {
+        transform: rotate(0deg) scale(0.8);
+    }
+
+    50% {
+        transform: rotate(180deg) scale(1.2);
+    }
+
+    100% {
+        transform: rotate(360deg) scale(0.8);
+    }
+}
+
+/* The Doors */
 .loading-door {
-    width: 80px;
-    height: 200px;
+    width: 130px;
+    height: 340px;
     background-color: var(--loading-door-bg);
-    border: 1px solid var(--loading-door-border);
+    border: 2px solid var(--loading-door-border);
     position: relative;
     box-sizing: border-box;
+    z-index: 2;
+    /* In front of magical core */
+    transform-style: preserve-3d;
 }
 
-/* Jagged inner edge illusion */
+/* Jagged inner edge illusion and Swing Animation */
 .loading-door.left {
+    transform-origin: left center;
     border-right: 1px dashed var(--loading-door-border);
     border-right-width: 2px;
+    transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .loading-door.right {
+    transform-origin: right center;
     border-left: 1px dashed var(--loading-door-border);
     border-left-width: 2px;
+    transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.loading-main-card.is-open .loading-door.left {
+    transform: rotateY(-125deg);
+}
+
+.loading-main-card.is-open .loading-door.right {
+    transform: rotateY(125deg);
 }
 
 .loading-nob {
@@ -907,11 +998,11 @@ body.loading-body {
 }
 
 .loading-text-container h2 {
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 500;
     color: var(--loading-text);
-    margin: 0 0 8px 0;
-    letter-spacing: 0.3px;
+    margin: 0 0 10px 0;
+    letter-spacing: 0.5px;
 }
 
 .loading-dots {
@@ -942,5 +1033,231 @@ body.loading-body {
     .loading-door {
         width: 60px;
         height: 150px;
+    }
+}
+
+/* ========================================= */
+/* OPENED DOOR ANIMATIONS & INTERIOR UI      */
+/* ========================================= */
+
+.lets-go-text {
+    position: absolute;
+    top: -10px;
+    left: -130px;
+    opacity: 0;
+    transition: opacity 1.5s ease 1s;
+    pointer-events: none;
+    z-index: 5;
+    filter: drop-shadow(0 0 10px rgba(213, 146, 234, 0.6));
+}
+
+.loading-main-card.is-open .lets-go-text {
+    opacity: 1;
+}
+
+@keyframes superPulse {
+    0% {
+        transform: scale(0.6);
+        opacity: 0.8;
+        filter: brightness(1);
+    }
+
+    40% {
+        transform: scale(3.5);
+        opacity: 1;
+        filter: brightness(2) drop-shadow(0 0 100px #A013EC);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 0.4;
+        filter: brightness(0.9);
+    }
+}
+
+.interior-ui {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.5s ease;
+    z-index: 10;
+}
+
+.interior-ui.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.curve-top,
+.curve-bottom {
+    position: absolute;
+    left: 0;
+    width: 100%;
+}
+
+.curve-top {
+    top: 10px;
+}
+
+.curve-bottom {
+    bottom: 10px;
+}
+
+.interior-btn {
+    background: linear-gradient(180deg, #7A42A4 0%, #4D1A77 100%);
+    color: #1A0031;
+    border: 1px solid #A962C6;
+    border-radius: 50px;
+    padding: 8px 30px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 2px 5px rgba(255, 255, 255, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: absolute;
+}
+
+.interior-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(213, 146, 234, 0.4), inset 0 2px 5px rgba(255, 255, 255, 0.2);
+}
+
+.attractive-open-text {
+    text-shadow: 0 0 12px rgba(160, 19, 236, 0.8), 0 0 25px rgba(160, 19, 236, 0.5);
+    animation: textGlow 2s infinite alternate;
+    transition: opacity 0.5s;
+    font-size: 18px !important;
+}
+
+.loading-main-card.is-open .loading-text-container {
+    opacity: 0;
+    pointer-events: none;
+}
+
+@keyframes textGlow {
+    0% {
+        text-shadow: 0 0 10px rgba(160, 19, 236, 0.5);
+        color: #B39DCD;
+    }
+
+    100% {
+        text-shadow: 0 0 20px rgba(160, 19, 236, 1), 0 0 35px rgba(160, 19, 236, 0.8);
+        color: #FFF;
+    }
+}
+
+.particles .particle {
+    position: absolute;
+    color: #FFF;
+    font-size: 14px;
+    opacity: 0;
+    animation: floatUp 3s infinite ease-in-out;
+    text-shadow: 0 0 10px #fff, 0 0 20px #A013EC;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(15px) scale(0.5);
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateY(-10px) scale(1.2);
+    }
+
+    100% {
+        transform: translateY(-40px) scale(0.5);
+        opacity: 0;
+    }
+}
+
+/* ========================================= */
+/* NEW CLOSED DOOR UI ELEMENTS                 */
+/* ========================================= */
+
+.open-door-btn {
+    background: linear-gradient(90deg, #A866BE 0%, #A013EC 100%);
+    color: #FFF;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 0 20px rgba(160, 19, 236, 0.6);
+    transition: opacity 0.5s, transform 0.2s;
+    margin-top: 10px;
+}
+
+.open-door-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(160, 19, 236, 0.8);
+}
+
+.loading-main-card.is-open .open-door-btn {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Intro Sparkle Animation "Flying Shining Thing" */
+.intro-sparkle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #FFF;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #FFF, 0 0 20px #A013EC, 0 0 40px #A013EC;
+    z-index: 100;
+    pointer-events: none;
+    animation: flyUnderDoor 2s ease-out forwards;
+}
+
+@keyframes flyUnderDoor {
+    0% {
+        top: -100px;
+        left: 20%;
+        transform: scale(1);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    40% {
+        top: 30%;
+        left: 30%;
+        transform: scale(2.5);
+    }
+
+    70% {
+        top: 60%;
+        left: 45%;
+        transform: scale(1.5);
+    }
+
+    90% {
+        top: 68%;
+        left: 50%;
+        transform: scale(0.5);
+        opacity: 1;
+    }
+
+    100% {
+        top: 68%;
+        left: 50%;
+        transform: scale(0);
+        opacity: 0;
     }
 }
