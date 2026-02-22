@@ -21,23 +21,26 @@
 
         <!-- Exterior Floating Text (Hidden until open) -->
         <div class="lets-go-text" id="lets-go-text">
-            <svg width="250" height="200" viewBox="0 0 250 200">
-                <path id="curve-letsgo" d="M 20,180 Q 80,40 230,20" fill="transparent" />
+            <svg width="400" height="100" viewBox="0 0 400 100">
+                <path id="curve-letsgo" d="M 20,80 Q 200,10 380,80" fill="transparent" />
                 <!-- Sketched appearance text -->
-                <text font-size="16" fill="transparent" stroke="#B39DCD" stroke-width="1.5" stroke-dasharray="3 3"
-                    style="font-family: 'Georgia', serif; font-style: italic; letter-spacing: 2px;">
-                    <textPath href="#curve-letsgo">Let's goooooooooooooooooooo</textPath>
+                <text font-size="22" fill="transparent" stroke="#B39DCD" stroke-width="1.5"
+                    style="font-family:'Fredericka the Great', serif; letter-spacing: 2px;">
+                    <textPath href="#curve-letsgo" startOffset="50%" text-anchor="middle">Let's goooooooooooooooooooo
+                    </textPath>
                 </text>
             </svg>
         </div>
 
         <!-- Double Doors -->
         <div class="loading-door-container" id="door-container" style="cursor: pointer;">
-            <!-- Target for the incoming 100 particles -->
+            <!-- Target for the incoming 1000 particles -->
             <div id="sparkle-target" class="sparkle-target"></div>
 
             <!-- Magical core hidden behind the doors -->
             <div class="magical-core" id="magical-core">
+                <!-- Raining shining things container -->
+                <div id="rain-container" class="rain-container"></div>
 
                 <!-- Shimmering particles (added as shining points) -->
                 <div class="particles">
@@ -115,6 +118,27 @@
             }
         }
 
+        // Generate Raining shining things
+        function createRain() {
+            const container = document.getElementById('rain-container');
+            for (let i = 0; i < 40; i++) {
+                const rainDrop = document.createElement('div');
+                rainDrop.className = 'rain-particle';
+                rainDrop.innerHTML = Math.random() > 0.5 ? '✦' : '✧';
+                rainDrop.style.left = Math.random() * 100 + '%';
+                rainDrop.style.animationDelay = (Math.random() * 2) + 's';
+                rainDrop.style.fontSize = (10 + Math.random() * 14) + 'px';
+
+                // Add some depth variation
+                if (Math.random() > 0.7) {
+                    rainDrop.style.filter = 'blur(1px)';
+                    rainDrop.style.opacity = '0.5';
+                }
+
+                container.appendChild(rainDrop);
+            }
+        }
+
         // Initialize swarm on load
         window.addEventListener('DOMContentLoaded', createSwarm);
 
@@ -124,6 +148,9 @@
 
             // Trigger door swing
             mainCard.classList.add('is-open');
+
+            // Trigger raining shining things
+            createRain();
 
             // Show UI buttons after door opens
             setTimeout(() => {
