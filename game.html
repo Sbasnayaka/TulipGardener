@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game - Tulip Gardener</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- ═══ Celebration Overlay ═══ -->
+    <div id="celebration" class="celebration-overlay">
+        <div class="emoji-watering">🚿</div>
+        <div class="emoji-flower">🌷</div>
+        <h2>Tulip Grown! 🎉</h2>
+        <p style="color: #ccc; margin-top: 5px;">Score: <span id="celebration-score">0</span></p>
+        <a href="dashboard.html" class="btn btn-primary" style="margin-top: 15px; border-color: #fff;">Go to Garden</a>
+    </div>
+
+    <!-- ═══ Game UI ═══ -->
+    <div class="container wide">
+        <div class="card">
+            <!-- Header -->
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ddd; padding-bottom: 15px; margin-bottom: 20px;">
+                <span id="game-mode-label" style="font-weight: 700; font-size: 1.2rem;">Beginner Mode</span>
+                <span id="timer-display">∞ Unlimited</span>
+            </div>
+
+            <div class="game-grid">
+                <!-- Left: Question -->
+                <div class="question-card">
+                    <h3>What is the<br>value of <strong>'❤️'</strong>?</h3>
+
+                    <input type="number" id="answer-input" class="form-control" placeholder="ex: 5"
+                        style="text-align: center; font-size: 1.2rem; margin: 20px 0;">
+
+                    <button id="submit-btn" class="btn btn-primary" style="width: 100%;">Submit</button>
+                </div>
+
+                <!-- Right: Image -->
+                <div class="image-display">
+                    <img id="puzzle-image" src="" alt="Loading puzzle...">
+                    <p id="loading-text" style="color: #999;">Loading puzzle...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Architecture: Service Layer -->
+    <script src="js/services/supabaseClient.js"></script>
+    <script src="js/services/UserService.js"></script>
+    <script src="js/services/HeartApiService.js"></script>
+    <!-- Architecture: Controller Layer -->
+    <script src="js/controllers/AuthController.js"></script>
+    <script src="js/controllers/GameController.js"></script>
+
+    <script>
+        // Get mode from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const mode = urlParams.get('mode') || 'beginner';
+
+        // Update mode label
+        document.getElementById('game-mode-label').innerText =
+            mode.charAt(0).toUpperCase() + mode.slice(1) + ' Mode';
+
+        // Create controller instance and initialize
+        const gameCtrl = new GameController(mode);
+
+        // Auth guard then init game
+        (async () => {
+            const authed = await AuthController.requireAuth();
+            if (!authed) return;
+            await gameCtrl.init();
+            document.getElementById('loading-text').style.display = 'none';
+        })();
+
+        // Submit button
+        document.getElementById('submit-btn').addEventListener('click', () => {
+            const answer = document.getElementById('answer-input').value;
+            gameCtrl.checkAnswer(answer);
+        });
+
+        // Also allow Enter key
+        document.getElementById('answer-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const answer = document.getElementById('answer-input').value;
+                gameCtrl.checkAnswer(answer);
+            }
+        });
+    </script>
+</body>
+
+</html>

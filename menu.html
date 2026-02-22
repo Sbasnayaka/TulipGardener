@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - Tulip Gardener</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container" style="max-width: 700px;">
+        <div class="card">
+            <!-- Navigation -->
+            <div class="nav-pill">
+                <a href="#" class="nav-item active">Menu</a>
+                <a href="dashboard.html" class="nav-item">Dashboard</a>
+                <a href="profile.html" class="nav-item">Profile</a>
+            </div>
+
+            <h2 style="margin-top: 20px;">Select Difficulty</h2>
+
+            <div class="mode-container">
+                <a href="game.html?mode=beginner" class="mode-circle">Beginner</a>
+                <a href="game.html?mode=intermediate" class="mode-circle">Inter-<br>mediate</a>
+                <a href="game.html?mode=pro" class="mode-circle">Pro</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth guard -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/services/supabaseClient.js"></script>
+    <script src="js/services/UserService.js"></script>
+    <script src="js/controllers/AuthController.js"></script>
+    <script>AuthController.requireAuth();</script>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Tulip Gardener</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container" style="max-width: 600px;">
+        <div class="card">
+            <!-- Navigation -->
+            <div class="nav-pill">
+                <a href="menu.html" class="nav-item">Menu</a>
+                <a href="dashboard.html" class="nav-item">Dashboard</a>
+                <a href="#" class="nav-item active">Profile</a>
+            </div>
+
+            <div class="profile-layout">
+                <div class="avatar-circle">
+                    <img id="profile-avatar" src="" alt="Avatar">
+                </div>
+
+                <div class="profile-stats">
+                    <p><strong>Player name:</strong> <span id="p-username">...</span></p>
+                    <p><strong>Score:</strong> <span id="p-score">0</span></p>
+                    <p><strong>Total tulips:</strong> <span id="p-tulips">0</span></p>
+                    <p><strong>Best record:</strong> <span id="p-best">0</span></p>
+                </div>
+            </div>
+
+            <button onclick="AuthController.handleLogout()" class="btn"
+                style="margin-top: 30px; border-color: #d32f2f; color: #d32f2f;">Logout</button>
+        </div>
+    </div>
+
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Architecture -->
+    <script src="js/services/supabaseClient.js"></script>
+    <script src="js/services/UserService.js"></script>
+    <script src="js/controllers/AuthController.js"></script>
+
+    <script>
+        async function loadProfile() {
+            const authed = await AuthController.requireAuth();
+            if (!authed) return;
+
+            try {
+                const profile = await UserService.getProfile();
+                document.getElementById('p-username').innerText = profile.username;
+                document.getElementById('p-score').innerText = profile.score;
+                document.getElementById('p-tulips').innerText = profile.score;
+                document.getElementById('p-best').innerText = profile.best_record;
+                document.getElementById('profile-avatar').src = profile.avatar_url;
+            } catch (e) {
+                console.error('Profile load error:', e);
+            }
+        }
+
+        loadProfile();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tulip Gardener Home</title>
+    <!-- Using Poppins as matched with previous font setup -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="home-body">
+    <!-- Glowing Orbs Background -->
+    <div class="home-glow-orb top-left"></div>
+    <div class="home-glow-orb bottom-right"></div>
+    <div class="home-glow-orb center-left"></div>
+    <div class="home-glow-orb top-right"></div>
+
+    <div class="home-wrapper">
+        <!-- Header Pill -->
+        <header class="home-header-pill">
+            <h1>Welcome to Tulip garden</h1>
+        </header>
+
+        <!-- Main Card -->
+        <main class="home-main-card">
+            <!-- Image Area -->
+            <div class="home-image-container">
+                <img src="assets/background-img1.png" alt="Glowing Tulip">
+                <div class="home-chevron">
+                    <!-- Double Chevron Icon -->
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="7 13 12 18 17 13"></polyline>
+                        <polyline points="7 6 12 11 17 6"></polyline>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Text Area -->
+            <div class="home-text-container">
+                <h2>Solve the puzzles</h2>
+                <p>Grow tulips</p>
+            </div>
+
+            <!-- Button -->
+            <!-- Link to auth.html as it replaces the previous splash flow gracefully -->
+            <a href="auth.html?mode=login" class="home-explore-btn">
+                Explore the Garden
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" style="margin-left:4px;">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </main>
+    </div>
+
+    <!-- Footer Loading Text -->
+    <footer class="home-footer-loading">
+        <p>LOADING.....</p>
+    </footer>
+</body>
+
+</html>

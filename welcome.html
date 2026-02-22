@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - Tulip Gardener</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="avatar-circle">
+                <img id="user-avatar" src="" alt="Avatar">
+            </div>
+
+            <h2 id="welcome-msg">Welcome playerrr !!!</h2>
+
+            <a href="dashboard.html" class="btn btn-primary" style="padding: 15px 50px; font-size: 1.2rem;">Goooooo</a>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const username = urlParams.get('username') || 'Player';
+        const avatar = urlParams.get('avatar');
+
+        document.getElementById('welcome-msg').innerText = `Welcome ${username} playerrr !!!`;
+        if (avatar) {
+            document.getElementById('user-avatar').src = decodeURIComponent(avatar);
+        }
+    </script>
+</body>
+
+</html>

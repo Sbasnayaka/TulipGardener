@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Tulip Gardener</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container wide">
+        <div class="card">
+            <!-- Navigation -->
+            <div class="nav-pill">
+                <a href="menu.html" class="nav-item">Menu</a>
+                <a href="#" class="nav-item active">Dashboard</a>
+                <a href="profile.html" class="nav-item">Profile</a>
+            </div>
+
+            <div class="dashboard-layout">
+                <!-- Left: Stats -->
+                <div class="stats-panel">
+                    <h3>Gardener Status</h3>
+
+                    <p style="margin-top: 10px;">Current Level</p>
+                    <div style="width: 60px; height: 60px; border: 2px solid #222; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700;"
+                        id="level-badge">
+                        Beginner
+                    </div>
+
+                    <p>Total Tulips</p>
+                    <div style="width: 60px; height: 60px; border: 2px solid #222; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700;"
+                        id="score-badge">
+                        0
+                    </div>
+
+                    <a href="menu.html" class="btn btn-primary">Grow a new<br>Tulip 🌷</a>
+                </div>
+
+                <!-- Right: Garden Grid -->
+                <div>
+                    <h3 style="margin-bottom: 15px;">My Garden</h3>
+                    <div class="garden-grid" id="garden">
+                        <!-- 9 slots filled by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Architecture -->
+    <script src="js/services/supabaseClient.js"></script>
+    <script src="js/services/UserService.js"></script>
+    <script src="js/controllers/AuthController.js"></script>
+
+    <script>
+        async function loadDashboard() {
+            const authed = await AuthController.requireAuth();
+            if (!authed) return;
+
+            try {
+                const profile = await UserService.getProfile();
+                document.getElementById('score-badge').innerText = profile.score;
+
+                // Determine level
+                let level = 'Beginner';
+                if (profile.score >= 6) level = 'Pro';
+                else if (profile.score >= 3) level = 'Intermediate';
+                document.getElementById('level-badge').innerText = level;
+
+                // Render garden
+                renderGarden(profile.score);
+            } catch (e) {
+                console.error('Dashboard load error:', e);
+            }
+        }
+
+        function renderGarden(score) {
+            const grid = document.getElementById('garden');
+            grid.innerHTML = '';
+            for (let i = 0; i < 9; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'garden-slot' + (i < score ? ' filled' : '');
+                slot.innerHTML = i < score ? '🌷' : '';
+                grid.appendChild(slot);
+            }
+        }
+
+        loadDashboard();
+    </script>
+</body>
+
+</html>
