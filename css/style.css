@@ -1518,6 +1518,11 @@ body.auth-body {
     color: #000;
 }
 
+.auth-login-card.signup-mode {
+    width: 680px;
+    height: 540px;
+}
+
 @media (max-width: 650px) {
     .auth-login-card {
         width: 90%;

@@ -25,7 +25,7 @@
     </a>
 
     <div class="container auth-container">
-        <div class="card auth-login-card">
+        <div class="card auth-login-card" id="auth-card">
             <h1 id="auth-title" class="auth-heading">Login</h1>
 
             <form id="auth-form">
@@ -78,9 +78,11 @@
         const mode = urlParams.get('mode') || 'login';
 
         const toggleLink = document.getElementById('auth-toggle-link');
+        const authCard = document.getElementById('auth-card');
 
         // Set title and UI elements based on mode
         if (mode === 'signup') {
+            authCard.classList.add('signup-mode');
             document.getElementById('auth-title').innerText = 'Sign Up';
             document.getElementById('username-group').style.display = 'flex';
             document.getElementById('confirm-password-group').style.display = 'flex';
@@ -98,6 +100,7 @@
             // Make confirm password required for signup
             document.getElementById('confirm-password').setAttribute('required', 'true');
         } else {
+            authCard.classList.remove('signup-mode');
             document.getElementById('auth-title').innerText = 'Login';
             document.getElementById('username-group').style.display = 'none';
             document.getElementById('confirm-password-group').style.display = 'none';
