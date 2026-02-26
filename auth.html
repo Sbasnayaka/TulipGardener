@@ -5,16 +5,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Authentication - Tulip Gardener</title>
+    <link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&family=Emilys+Candy&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
+<body class="auth-body">
+    <!-- Glowing Orbs Background -->
+    <div class="home-glow-orb top-left"></div>
+    <div class="home-glow-orb bottom-right"></div>
+    <div class="home-glow-orb center-left"></div>
+    <div class="home-glow-orb top-right"></div>
 
-    <a href="index.html" class="back-btn">&larr;</a>
+    <a href="index.html" class="auth-back-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1A0031" stroke-width="3"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+    </a>
 
-    <div class="container">
-        <div class="card">
-            <h1 id="auth-title">Login</h1>
+    <div class="container auth-container">
+        <div class="card auth-login-card">
+            <h1 id="auth-title" class="auth-heading">Login</h1>
 
             <form id="auth-form">
                 <!-- Username (shown for both, used for signup profile) -->
@@ -33,7 +45,20 @@
                     <input type="password" id="password" class="form-control" placeholder="••••••••" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Submit</button>
+                <div class="form-group" id="confirm-password-group" style="display: none;">
+                    <label>Confirm Password</label>
+                    <input type="password" id="confirm-password" class="form-control" placeholder="Confirm Password">
+                </div>
+
+                <button type="submit" class="btn btn-primary auth-submit-btn" style="width: 100%;">Submit</button>
+
+                <!-- Navigation link between Login and Signup -->
+                <div style="margin-top: 20px; text-align: center;">
+                    <a href="#" id="auth-toggle-link"
+                        style="color: #B39DCD; text-decoration: none; font-size: 13px; font-family: 'Poppins', sans-serif;">
+                        Don't have an account? Sign up
+                    </a>
+                </div>
             </form>
 
             <p id="error-msg" class="error-msg"></p>
@@ -52,12 +77,41 @@
         const urlParams = new URLSearchParams(window.location.search);
         const mode = urlParams.get('mode') || 'login';
 
-        // Set title
-        document.getElementById('auth-title').innerText = mode === 'signup' ? 'Sign Up' : 'Login';
+        const toggleLink = document.getElementById('auth-toggle-link');
 
-        // Hide username field for login
-        if (mode === 'login') {
+        // Set title and UI elements based on mode
+        if (mode === 'signup') {
+            document.getElementById('auth-title').innerText = 'Sign Up';
+            document.getElementById('username-group').style.display = 'flex';
+            document.getElementById('confirm-password-group').style.display = 'flex';
+
+            // For signup, use the real field names for placeholders
+            document.getElementById('username').placeholder = 'Username';
+            document.getElementById('email').placeholder = 'Email';
+            document.getElementById('password').placeholder = 'Password';
+            document.getElementById('confirm-password').placeholder = 'Confirm Password';
+
+            // Set link to switch to login
+            toggleLink.innerText = 'Already have an account? Login';
+            toggleLink.href = 'auth.html?mode=login';
+
+            // Make confirm password required for signup
+            document.getElementById('confirm-password').setAttribute('required', 'true');
+        } else {
+            document.getElementById('auth-title').innerText = 'Login';
             document.getElementById('username-group').style.display = 'none';
+            document.getElementById('confirm-password-group').style.display = 'none';
+
+            // For login, hijack placeholders to simulate username/password visually
+            document.getElementById('email').placeholder = 'Username';
+            document.getElementById('password').placeholder = 'Password';
+
+            // Set link to switch to signup
+            toggleLink.innerText = "Don't have an account? Sign up";
+            toggleLink.href = 'auth.html?mode=signup';
+
+            // Remove required attribute for login
+            document.getElementById('confirm-password').removeAttribute('required');
         }
 
         // Form submit
@@ -73,6 +127,15 @@
 
             if (mode === 'signup') {
                 const username = document.getElementById('username').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+
+                // Inline validation for password match as constrained
+                if (password !== confirmPassword) {
+                    errorMsg.innerText = "Passwords do not match.";
+                    errorMsg.style.display = 'block';
+                    return;
+                }
+
                 result = await AuthController.handleSignUp(email, password, username);
             } else {
                 result = await AuthController.handleLogin(email, password);
