@@ -2640,3 +2640,20 @@ body.auth-body {
         transform: rotate(360deg);
     }
 }
+
+/* ========================================= */
+/* GLOBAL COPYRIGHT FOOTER                   */
+/* ========================================= */
+.global-copyright {
+    position: fixed;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    font-family: 'Poppins', sans-serif;
+    color: rgba(255, 255, 255, 0.4);
+    z-index: 9999;
+    pointer-events: none;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
