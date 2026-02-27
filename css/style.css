@@ -2052,3 +2052,231 @@ body.auth-body {
         height: 200px;
     }
 }
+
+/* ========================================= */
+/* PIXEL-PERFECT DASHBOARD LOW-FI RECREATION */
+/* ========================================= */
+
+.dashboard-main-layout {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    z-index: 10;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.dashboard-glass-card {
+    width: 1000px;
+    max-width: 95vw;
+    height: 500px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 40px;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 0 40px rgba(160, 19, 236, 0.05);
+    display: flex;
+    padding: 40px;
+    gap: 30px;
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* 3-Column Base */
+.dash-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Left Column */
+.dash-col-left {
+    flex: 1;
+    gap: 20px;
+}
+
+.oval-video-mask {
+    width: 130px;
+    height: 190px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(160, 19, 236, 0.4);
+    box-shadow: 0 0 20px rgba(160, 19, 236, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+}
+
+.oval-video-mask video {
+    width: auto;
+    height: 100%;
+    min-width: 100%;
+    object-fit: cover;
+}
+
+.grow-btn {
+    width: 170px;
+    padding: 12px 20px;
+    font-size: 14px;
+    border-radius: 30px;
+    text-align: center;
+}
+
+/* Divider */
+.dash-divider {
+    width: 1px;
+    height: 90%;
+    background: rgba(255, 255, 255, 0.1);
+    align-self: center;
+}
+
+/* Center Column */
+.dash-col-center {
+    flex: 1.2;
+    align-items: flex-start;
+    padding-left: 20px;
+}
+
+.dash-status-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #FFF;
+    margin: 0 0 25px 0;
+    align-self: flex-start;
+}
+
+.dash-status-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 25px;
+    align-self: center;
+}
+
+.dash-status-item p {
+    font-size: 13px;
+    color: #B29CCB;
+    margin: 0 0 10px 0;
+}
+
+.status-circle-hollow {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #FFF;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.score-circle {
+    font-size: 24px;
+    font-weight: 700;
+    color: #A013EC;
+    border-color: rgba(160, 19, 236, 0.4);
+    box-shadow: inset 0 0 15px rgba(160, 19, 236, 0.2);
+}
+
+/* Right Column (Garden grid) */
+.dash-col-right {
+    flex: 2;
+    justify-content: stretch;
+}
+
+.garden-viewport {
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    padding: 20px;
+    background: rgba(20, 10, 31, 0.4);
+    display: flex;
+    justify-content: center;
+}
+
+.garden-grid-scrollable {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 100px;
+    gap: 15px;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 15px;
+    /* space for scrollbar layout mapping */
+}
+
+/* Customizing the scrollbar for the grid container so it perfectly fits wireframe */
+.garden-grid-scrollable::-webkit-scrollbar {
+    width: 4px;
+}
+
+.garden-grid-scrollable::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.garden-grid-scrollable::-webkit-scrollbar-thumb {
+    background: rgba(160, 19, 236, 0.5);
+    border-radius: 10px;
+}
+
+.garden-grid-scrollable::-webkit-scrollbar-thumb:hover {
+    background: rgba(160, 19, 236, 0.8);
+}
+
+.garden-wire-slot {
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.01);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.grown-tulip-img {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 5px rgba(160, 19, 236, 0.3));
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 900px) {
+    .dashboard-glass-card {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .dash-divider {
+        width: 100%;
+        height: 1px;
+    }
+
+    .dash-col-right {
+        height: 400px;
+    }
+}
