@@ -2571,3 +2571,72 @@ body.auth-body {
         gap: 15px;
     }
 }
+
+/* ========================================= */
+/* GLOBAL FLOATING ACTION BUTTONS (FAB)      */
+/* ========================================= */
+.global-fab-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 9999;
+}
+
+.fab-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFF;
+    text-decoration: none;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.fab-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+}
+
+.fab-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
+    animation: rotateGlow 4s linear infinite;
+    pointer-events: none;
+}
+
+.fab-play {
+    background: linear-gradient(135deg, #A013EC, #B347FF);
+    box-shadow: 0 5px 20px rgba(160, 19, 236, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.fab-leaderboard {
+    background: linear-gradient(135deg, #ffca28, #ffb300);
+    box-shadow: 0 5px 20px rgba(255, 202, 40, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.fab-btn svg {
+    z-index: 1;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes rotateGlow {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
