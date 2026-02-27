@@ -1829,3 +1829,226 @@ body.auth-body {
         gap: 30px;
     }
 }
+
+/* ========================================= */
+/* PIXEL-PERFECT MENU (PLAYER HOME) REDESIGN */
+/* ========================================= */
+
+.petals-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.shiny-petal {
+    position: absolute;
+    top: -50px;
+    width: 60px;
+    height: 60px;
+    background-image: url('../assets/petals.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0;
+    /* Adding a heavy pink/purple glow drop-shadow to make them "shiny" */
+    filter: drop-shadow(0 0 8px rgba(213, 146, 234, 0.9)) brightness(1.2);
+    animation: shiny-petal-fall linear infinite;
+}
+
+@keyframes shiny-petal-fall {
+    0% {
+        top: -10vh;
+        transform: scale(var(--scale-factor)) rotate(var(--rot-start));
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.85;
+    }
+
+    90% {
+        opacity: 0.85;
+    }
+
+    100% {
+        top: 110vh;
+        transform: scale(var(--scale-factor)) rotate(var(--rot-end));
+        opacity: 0;
+    }
+}
+
+.menu-main-layout {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+}
+
+.menu-radial-glow {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(160, 19, 236, 0.15) 0%, rgba(20, 10, 31, 0) 60%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.menu-page-title {
+    font-size: 45px;
+    font-weight: 800;
+    color: #FFF;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.highlight-brand {
+    color: #A013EC;
+}
+
+.menu-page-subtitle {
+    font-size: 16px;
+    font-weight: 400;
+    color: #8A6E9E;
+    margin: 10px 0 50px 0;
+}
+
+.mode-cards-wrapper {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+.mode-glass-card {
+    text-decoration: none;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.mode-glass-card:hover {
+    transform: scale(1.05);
+    background: rgba(160, 19, 236, 0.05);
+    border-color: rgba(160, 19, 236, 0.3);
+    box-shadow: 0 10px 30px rgba(160, 19, 236, 0.2), inset 0 0 50px rgba(160, 19, 236, 0.1);
+}
+
+.mode-icon-circle,
+.mode-icon-square,
+.mode-icon-circle-filled {
+    width: 60px;
+    height: 60px;
+    background: rgba(45, 15, 75, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #B347FF;
+}
+
+.mode-icon-circle {
+    border-radius: 50%;
+}
+
+.mode-icon-square {
+    border-radius: 14px;
+}
+
+.mode-icon-circle-filled {
+    border-radius: 50%;
+    background: rgba(160, 19, 236, 0.15);
+}
+
+.mode-glass-card h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #FFF;
+}
+
+.menu-bottom-footer {
+    width: 100%;
+    padding: 30px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+}
+
+.footer-left-actions {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #8A6E9E;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.footer-btn:hover {
+    color: #FFF;
+}
+
+.footer-right-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.daily-text {
+    font-size: 11px;
+    font-weight: 600;
+    color: #8A6E9E;
+    letter-spacing: 1px;
+}
+
+.challenge-pill {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 6px 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #FFF;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+@media (max-width: 900px) {
+    .mode-cards-wrapper {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .mode-glass-card {
+        width: 200px;
+        height: 200px;
+    }
+}
