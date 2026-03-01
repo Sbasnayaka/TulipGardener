@@ -30,15 +30,9 @@
             <h1 id="auth-title" class="auth-heading">Login</h1>
 
             <form id="auth-form">
-                <!-- Username (shown for both, used for signup profile) -->
                 <div class="form-group" id="username-group">
                     <label>Username</label>
                     <input type="text" id="username" class="form-control" placeholder="Your player name" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="email" class="form-control" placeholder="you@example.com" required>
                 </div>
 
                 <div class="form-group">
@@ -90,7 +84,6 @@
 
             // For signup, use the real field names for placeholders
             document.getElementById('username').placeholder = 'Username';
-            document.getElementById('email').placeholder = 'Email';
             document.getElementById('password').placeholder = 'Password';
             document.getElementById('confirm-password').placeholder = 'Confirm Password';
 
@@ -103,11 +96,11 @@
         } else {
             authCard.classList.remove('signup-mode');
             document.getElementById('auth-title').innerText = 'Login';
-            document.getElementById('username-group').style.display = 'none';
+            document.getElementById('username-group').style.display = 'flex';
             document.getElementById('confirm-password-group').style.display = 'none';
 
-            // For login, hijack placeholders to simulate username/password visually
-            document.getElementById('email').placeholder = 'Username';
+            // For login, keep placeholder simple
+            document.getElementById('username').placeholder = 'Username';
             document.getElementById('password').placeholder = 'Password';
 
             // Set link to switch to signup
@@ -122,7 +115,7 @@
         document.getElementById('auth-form').addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const email = document.getElementById('email').value;
+            const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const errorMsg = document.getElementById('error-msg');
             errorMsg.style.display = 'none';
@@ -130,7 +123,6 @@
             let result;
 
             if (mode === 'signup') {
-                const username = document.getElementById('username').value;
                 const confirmPassword = document.getElementById('confirm-password').value;
 
                 // Inline validation for password match as constrained
@@ -140,9 +132,9 @@
                     return;
                 }
 
-                result = await AuthController.handleSignUp(email, password, username);
+                result = await AuthController.handleSignUp(username, password);
             } else {
-                result = await AuthController.handleLogin(email, password);
+                result = await AuthController.handleLogin(username, password);
             }
 
             if (!result.success) {

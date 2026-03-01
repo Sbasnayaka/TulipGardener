@@ -14,10 +14,29 @@ class UserService {
      * Sign up a new user with email and password.
      * Also creates a profile row in the `profiles` table.
      */
-    static async signUp(email, password, username) {
+    static async signUp(username, password) {
+        // 0. Check for duplicate username first to prevent dangling auth users
+        const { data: existingUser, error: checkError } = await supabaseClient
+            .from('profiles')
+            .select('username')
+            .eq('username', username)
+            .maybeSingle();
+
+        if (checkError && checkError.code !== 'PGRST116') {
+            // PGRST116 means 0 rows returned, which is fine here. 
+            // If it's another error, throw it.
+            throw checkError;
+        }
+
+        if (existingUser) {
+            throw new Error("Username is already taken. Please choose another one.");
+        }
+
+        const dummyEmail = `${username}@tulipgardener.local`;
+
         // 1. Create auth user
         const { data, error } = await supabaseClient.auth.signUp({
-            email: email,
+            email: dummyEmail,
             password: password,
         });
 
@@ -49,13 +68,19 @@ class UserService {
     /**
      * Sign in an existing user.
      */
-    static async signIn(email, password) {
+    static async signIn(username, password) {
+        const dummyEmail = `${username}@tulipgardener.local`;
         const { data, error } = await supabaseClient.auth.signInWithPassword({
-            email: email,
+            email: dummyEmail,
             password: password,
         });
 
-        if (error) throw error;
+        if (error) {
+            if (error.message.includes("Invalid login credentials") || error.message.includes("Invalid Date")) {
+                throw new Error("Invalid username or password");
+            }
+            throw error;
+        }
         return data;
     }
 

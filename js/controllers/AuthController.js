@@ -14,9 +14,9 @@ class AuthController {
      * Handle the Sign Up form submission.
      * Called from auth.html's form onsubmit.
      */
-    static async handleSignUp(email, password, username) {
+    static async handleSignUp(username, password) {
         try {
-            const result = await UserService.signUp(email, password, username);
+            const result = await UserService.signUp(username, password);
 
             // Redirect to welcome page with user info
             window.location.href = `welcome.html?username=${encodeURIComponent(username)}&avatar=${encodeURIComponent(result.avatarUrl)}`;
@@ -30,9 +30,9 @@ class AuthController {
      * Handle the Login form submission.
      * Called from auth.html's form onsubmit.
      */
-    static async handleLogin(email, password) {
+    static async handleLogin(username, password) {
         try {
-            await UserService.signIn(email, password);
+            await UserService.signIn(username, password);
 
             // Get profile to redirect with username
             const profile = await UserService.getProfile();
