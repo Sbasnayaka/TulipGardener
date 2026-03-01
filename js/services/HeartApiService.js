@@ -10,7 +10,7 @@
 
 class HeartApiService {
 
-    static API_URL = 'http://marcconrad.com/uob/heart/api.php?out=json';
+    static API_URL = 'https://marcconrad.com/uob/heart/api.php?out=json';
 
     /**
      * Fetches a puzzle from the Heart API.
