@@ -67,4 +67,26 @@ class AuthController {
         }
         return true;
     }
+
+    /**
+     * Listen for auth changes (like token refreshes or actual sign outs) 
+     * to manage session state globally without disruptive redirects on network blips.
+     */
+    static initAuthListener() {
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            // Only redirect if explicitly signed out or user deleted
+            if (event === 'SIGNED_OUT' || event === 'USER_DELETED') {
+                const protectedPages = ['welcome.html', 'dashboard.html', 'profile.html', 'game.html'];
+                const currentPage = window.location.pathname.split('/').pop() || '';
+
+                if (protectedPages.includes(currentPage)) {
+                    window.location.href = 'index.html';
+                }
+            }
+            // We ignore INITIAL_SESSION or TOKEN_REFRESHED to avoid unnecessary redirects
+        });
+    }
 }
+
+// Auto-initialize the listener when the controller loads
+AuthController.initAuthListener();

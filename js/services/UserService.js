@@ -88,8 +88,10 @@ class UserService {
      * Get the currently logged-in user's profile data.
      */
     static async getProfile() {
-        const { data: { user } } = await supabaseClient.auth.getUser();
-        if (!user) return null;
+        const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
+        if (sessionError || !session) return null;
+
+        const user = session.user;
 
         const { data, error } = await supabaseClient
             .from('profiles')
@@ -132,7 +134,8 @@ class UserService {
      * Check if a user is currently logged in.
      */
     static async getCurrentUser() {
-        const { data: { user } } = await supabaseClient.auth.getUser();
-        return user;
+        const { data: { session }, error } = await supabaseClient.auth.getSession();
+        if (error || !session) return null;
+        return session.user;
     }
 }
