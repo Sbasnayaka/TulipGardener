@@ -248,7 +248,7 @@
 
         .lb-stats-container {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
             justify-content: center;
             margin: 30px auto;
@@ -509,19 +509,7 @@
             </svg>
         </div>
 
-        <!-- Card 3 -->
-        <div class="lb-stat-card">
-            <div class="lb-stat-title">ELITE THRESHOLD</div>
-            <h2 class="lb-stat-value">850,000</h2>
-            <div class="lb-stat-sub sub-gray" id="elite-sub">
-                -- to rank up
-            </div>
-            <svg class="lb-stat-icon" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#fff"
-                stroke-width="1.5">
-                <circle cx="12" cy="8" r="6"></circle>
-                <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
-            </svg>
-        </div>
+        <!-- Removed Card 3 -->
     </div>
 
     <div class="lb-action-btn-container">
@@ -578,15 +566,7 @@
                     }
                 }
 
-                const threshold = 850000;
-                const remaining = Math.max(0, threshold - userScore);
-                if (remaining > 0) {
-                    let textAmount = remaining >= 1000 ? (remaining / 1000).toFixed(1) + 'k' : formatNumber(remaining);
-                    document.getElementById('elite-sub').innerText = `${textAmount} to rank up`;
-                } else {
-                    document.getElementById('elite-sub').innerText = `Elite Status Reached!`;
-                    document.getElementById('elite-sub').style.color = '#B347FF';
-                }
+                // Removed threshold logic
 
                 // Fetch top 50 users for leaderboard
                 const { data, error } = await supabaseClient
