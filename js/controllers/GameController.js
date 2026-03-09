@@ -23,18 +23,18 @@ class GameController {
     async init() {
         // Set timer based on mode
         if (this.mode === 'intermediate') {
-            this.timeLeft = 30;
+            this.timeLeft = 5;
         } else if (this.mode === 'pro') {
+            this.timeLeft = 3;
+        } else {
             this.timeLeft = 10;
         }
 
         // Fetch puzzle
         await this.loadPuzzle();
 
-        // Start timer if not beginner
-        if (this.mode !== 'beginner') {
-            this.startTimer();
-        }
+        // Start timer for all modes
+        this.startTimer();
     }
 
     /**
@@ -46,7 +46,16 @@ class GameController {
             this.currentSolution = puzzle.solution;
 
             // Update the UI
-            document.getElementById('puzzle-image').src = puzzle.imageUrl;
+            const imgEl = document.getElementById('puzzle-image');
+            imgEl.onload = () => {
+                imgEl.classList.remove('puzzle-blur');
+                const overlay = document.getElementById('loading-overlay');
+                if (overlay) {
+                    overlay.style.opacity = '0';
+                    setTimeout(() => overlay.style.display = 'none', 500);
+                }
+            };
+            imgEl.src = puzzle.imageUrl;
         } catch (error) {
             console.error('Failed to load puzzle:', error);
             alert('Failed to load puzzle. Please refresh.');
@@ -74,11 +83,7 @@ class GameController {
      */
     updateTimerDisplay() {
         const timerEl = document.getElementById('timer-display');
-        if (this.mode === 'beginner') {
-            timerEl.innerText = '∞ Unlimited';
-        } else {
-            timerEl.innerText = `⏱ ${this.timeLeft}s`;
-        }
+        timerEl.innerText = `⏱ ${this.timeLeft}s`;
     }
 
     /**
@@ -92,6 +97,9 @@ class GameController {
             alert('Please enter a valid number.');
             return;
         }
+
+        const submitBtn = document.getElementById('submit-btn');
+        if (submitBtn) submitBtn.classList.add('btn-fade');
 
         if (answer === this.currentSolution) {
             // Stop timer
@@ -108,6 +116,7 @@ class GameController {
         } else {
             alert('❌ Incorrect! Try again.');
             document.getElementById('answer-input').value = '';
+            if (submitBtn) submitBtn.classList.remove('btn-fade');
         }
     }
 
