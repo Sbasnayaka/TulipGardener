@@ -34,36 +34,7 @@
             transition: opacity 1.5s ease;
         }
 
-        /* Raining Petals Animation */
-        .petal {
-            position: absolute;
-            background: rgba(255, 105, 180, 0.7);
-            border-radius: 15px 0 15px 0;
-            opacity: 0.8;
-            pointer-events: none;
-            animation: fall linear infinite;
-            z-index: 5;
-        }
 
-        @keyframes fall {
-            0% {
-                transform: translateY(-10vh) rotate(0deg);
-                opacity: 0;
-            }
-
-            10% {
-                opacity: 0.8;
-            }
-
-            90% {
-                opacity: 0.8;
-            }
-
-            100% {
-                transform: translateY(110vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
 
         /* Back Button Override */
         .back-btn {
@@ -136,35 +107,58 @@
     <!-- Back Button -->
     <a href="dashboard.html" class="back-btn" title="Back to Dashboard">←</a>
 
-    <!-- Background Video with 20% opacity overall -->
+    <!-- Background Image with 10% opacity overall -->
     <div class="video-container"
-        style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; overflow:hidden; opacity: 0.8;">
-        <!-- V01.MOV as requested -->
-        <video autoplay loop muted playsinline id="bg-video" style="object-fit:cover; width:100%; height:100%;">
-            <source src="assets/background-%20V01.MOV" type="video/mp4">
-        </video>
-        <!-- 20% dark overly -> inverted to match the '20% transparency' user requested -->
+        style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; overflow:hidden;">
+        <!-- background-img3.png as requested with low opacity -->
+        <img src="assets/background-img3.png" style="object-fit:cover; width:100%; height:100%; opacity: 0.9;"
+            alt="Background">
+        <!-- 10% dark overlay -->
         <div class="video-overlay"
-            style="position:absolute; top:0; left:0; width:100%; height:100%; background: rgba(0, 0, 0, 0.8);"></div>
+            style="position:absolute; top:0; left:0; width:100%; height:100%; background: rgba(0, 0, 0, 0.9);"></div>
     </div>
 
-    <!-- Raining Petals Container -->
-    <div id="petals-container"
-        style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none;"></div>
+    <!-- Raining Petals Container matching menu.html -->
+    <div class="petals-container"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; overflow:hidden;">
+    </div>
 
     <script>
-        // Raining Petals Engine
-        const petalsContainer = document.getElementById('petals-container');
-        for (let i = 0; i < 30; i++) {
-            let petal = document.createElement('div');
-            petal.className = 'petal';
-            petal.style.left = Math.random() * 100 + 'vw';
-            petal.style.width = (Math.random() * 10 + 10) + 'px';
-            petal.style.height = (Math.random() * 10 + 10) + 'px';
-            petal.style.animationDuration = (Math.random() * 3 + 4) + 's';
-            petal.style.animationDelay = (Math.random() * 5) + 's';
-            petalsContainer.appendChild(petal);
+        // 100+ Shiny Petal Rain Simulation matching menu.html
+        function createShinyPetals() {
+            const container = document.querySelector('.petals-container');
+            const petalCount = 120; // Generating over 100 petals
+
+            for (let i = 0; i < petalCount; i++) {
+                const petal = document.createElement('div');
+                petal.classList.add('shiny-petal');
+
+                // Randomly position across the entire viewport width
+                const leftPos = Math.random() * 100;
+
+                // Random duration between 8s and 20s for realistic floating
+                const animDuration = Math.random() * 12 + 8;
+
+                // Random delay to stagger the initial drop
+                const animDelay = Math.random() * 10;
+
+                // Random scale so petals look like individual small pieces or clumps
+                const scale = Math.random() * 0.2 + 0.1;
+
+                petal.style.left = `${leftPos}vw`;
+                petal.style.animationDuration = `${animDuration}s`;
+                petal.style.animationDelay = `-${animDelay}s`; // use negative delay so the screen is immediately populated
+                petal.style.setProperty('--scale-factor', scale);
+
+                // Randomly start with some rotation
+                const initialRotation = Math.random() * 360;
+                petal.style.setProperty('--rot-start', `${initialRotation}deg`);
+                petal.style.setProperty('--rot-end', `${initialRotation + (Math.random() > 0.5 ? 360 : -360)}deg`);
+
+                container.appendChild(petal);
+            }
         }
+        createShinyPetals();
     </script>
 
     <!-- ═══ Celebration Overlay ═══ -->
