@@ -15,6 +15,7 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            overflow-y: auto;
             font-family: 'Poppins', sans-serif;
             color: #fff;
         }
@@ -340,6 +341,31 @@
             transform: translateY(-2px);
             box-shadow: 0 12px 30px rgba(179, 71, 255, 0.4);
         }
+
+        #leaderboard-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        /* Custom scrollbar for leaderboard list */
+        #leaderboard-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #leaderboard-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        #leaderboard-container::-webkit-scrollbar-thumb {
+            background: rgba(179, 71, 255, 0.5);
+            border-radius: 4px;
+        }
+
+        #leaderboard-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(179, 71, 255, 0.8);
+        }
     </style>
 </head>
 
@@ -419,9 +445,9 @@
 
     <!-- Header Text matching Figma -->
     <div class="lb-header-container">
-        <div class="lb-subheading">THE CYBER-NATURE REALM</div>
+        <div class="lb-subheading">THE MAGICAL GARDEN</div>
         <h1 class="lb-heading">Global Leaderboard</h1>
-        <div class="lb-description">Honoring the elite horticulturalists of the neon digital frontier.</div>
+        <div class="lb-description">Honoring the elite horticulturalists of the digital greenhouse.</div>
 
         <div class="lb-tabs">
             <div class="lb-tab">ALL TIME</div>
@@ -589,10 +615,10 @@
                     let levelText = 'Cultivator';
 
                     let score = p.score || 0;
-                    if (index === 0) { rankClass = 'rank-1'; pillClass = 'pill-gold'; pillText = 'GOLD'; levelText = 'Grand Master'; }
-                    else if (index === 1) { rankClass = 'rank-2'; pillClass = 'pill-silver'; pillText = 'SILVER'; levelText = 'Elite Architect'; }
-                    else if (index === 2) { rankClass = 'rank-3'; pillClass = 'pill-bronze'; pillText = 'BRONZE'; levelText = 'Techno Shaman'; }
-                    else if (score >= 100000) { pillClass = 'pill-pro'; pillText = 'PRO'; levelText = 'Senior Cultivator'; }
+                    if (index === 0) { rankClass = 'rank-1'; pillClass = 'pill-gold'; pillText = 'GOLD'; levelText = 'Master Gardener'; }
+                    else if (index === 1) { rankClass = 'rank-2'; pillClass = 'pill-silver'; pillText = 'SILVER'; levelText = 'Elite Planter'; }
+                    else if (index === 2) { rankClass = 'rank-3'; pillClass = 'pill-bronze'; pillText = 'BRONZE'; levelText = 'Expert Grower'; }
+                    else if (score >= 100000) { pillClass = 'pill-pro'; pillText = 'PRO'; levelText = 'Pro Cultivator'; }
                     else { pillClass = 'pill-intermediate'; pillText = 'INTERMEDIATE'; levelText = 'Cultivator'; }
 
                     const avatarUrl = (p.avatar_url && p.avatar_url !== 'null' && p.avatar_url !== 'undefined') ? decodeURIComponent(p.avatar_url) : '';
@@ -631,7 +657,7 @@
             } catch (err) {
                 console.error('Leaderboard load error:', err);
                 document.getElementById('leaderboard-container').innerHTML =
-                    '<p style="color:#FF3366;text-align:center; padding: 20px;">Netrunner anomaly detected. Failed to fetch scores.</p>';
+                    '<p style="color:#FF3366;text-align:center; padding: 20px;">Magical anomaly detected. Failed to fetch scores.</p>';
             }
         }
         loadLeaderboard();
