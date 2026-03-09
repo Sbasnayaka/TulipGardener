@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - Tulip Gardener</title>
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Base page styling overrides for new leaderboard aesthetic */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+        }
+
+        .lb-header-container {
+            text-align: center;
+            margin-top: 80px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .lb-subheading {
+            color: #B347FF;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .lb-heading {
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 0 0 10px 0;
+        }
+
+        .lb-description {
+            color: #aaa;
+            font-size: 1rem;
+            margin-bottom: 25px;
+        }
+
+        .lb-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 0px;
+        }
+
+        .lb-tab {
+            color: #B347FF;
+            font-weight: 800;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            border-bottom: 3px solid #B347FF;
+            padding-bottom: 5px;
+            cursor: pointer;
+        }
+
+        .lb-main-card {
+            background: rgba(20, 5, 30, 0.4);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            width: 900px;
+            max-width: 95%;
+            margin: 0 auto;
+            padding: 20px 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .lb-table-header {
+            display: grid;
+            grid-template-columns: 80px 2.5fr 1fr 120px;
+            padding: 10px 40px;
+            color: #888;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 10px;
+        }
+
+        .lb-row {
+            display: grid;
+            grid-template-columns: 80px 2.5fr 1fr 120px;
+            align-items: center;
+            padding: 15px 40px;
+            transition: background 0.2s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            cursor: pointer;
+        }
+
+        .lb-row:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .lb-rank-col {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-right: 15px;
+        }
+
+        .lb-rank-circle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-sizing: border-box;
+        }
+
+        .lb-rank-circle.rank-1 {
+            border: 2px solid #ffd700;
+            color: #ffd700;
+        }
+
+        .lb-rank-circle.rank-2 {
+            border: 2px solid #c0c0c0;
+            color: #c0c0c0;
+        }
+
+        .lb-rank-circle.rank-3 {
+            border: 2px solid #cd7f32;
+            color: #cd7f32;
+        }
+
+        .lb-gardener-col {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .lb-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #333;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .lb-name-block {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .lb-name {
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .lb-level {
+            font-size: 0.8rem;
+            color: #B347FF;
+            font-weight: 600;
+        }
+
+        .lb-score-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .lb-score {
+            font-weight: 800;
+            font-size: 1.15rem;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .lb-score-sub {
+            font-size: 0.75rem;
+            color: #FF3366;
+            font-weight: 600;
+        }
+
+        .lb-status-col {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .lb-pill {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-align: center;
+            width: 90px;
+            border: 1px solid transparent;
+            background: rgba(255, 255, 255, 0.05);
+            color: #888;
+            letter-spacing: 0.5px;
+        }
+
+        .pill-gold {
+            border-color: rgba(255, 215, 0, 0.4);
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .pill-silver {
+            border-color: rgba(192, 192, 192, 0.4);
+            color: #c0c0c0;
+            background: rgba(192, 192, 192, 0.1);
+        }
+
+        .pill-bronze {
+            border-color: rgba(205, 127, 50, 0.4);
+            color: #cd7f32;
+            background: rgba(205, 127, 50, 0.1);
+        }
+
+        .pill-pro {
+            border-color: rgba(179, 71, 255, 0.4);
+            color: #B347FF;
+            background: rgba(179, 71, 255, 0.1);
+        }
+
+        .pill-intermediate {
+            border-color: rgba(160, 19, 236, 0.4);
+            color: #A013EC;
+            background: rgba(160, 19, 236, 0.1);
+        }
+
+        .lb-stats-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            justify-content: center;
+            margin: 30px auto;
+            width: 900px;
+            max-width: 95%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .lb-stat-card {
+            background: rgba(20, 5, 30, 0.4);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lb-stat-title {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .lb-stat-value {
+            font-size: 2.3rem;
+            font-weight: 800;
+            color: #fff;
+            margin: 0 0 8px 0;
+        }
+
+        .lb-stat-sub {
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .sub-pink {
+            color: #FF3366;
+        }
+
+        .sub-purple {
+            color: #B347FF;
+        }
+
+        .sub-gray {
+            color: #666;
+        }
+
+        .lb-stat-icon {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            opacity: 0.15;
+        }
+
+        .lb-action-btn-container {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .lb-action-btn {
+            background: #B347FF;
+            color: #fff;
+            border: none;
+            padding: 18px 50px;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 8px 25px rgba(179, 71, 255, 0.3);
+        }
+
+        .lb-action-btn:hover {
+            background: #9d2ae8;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(179, 71, 255, 0.4);
+        }
+    </style>
+</head>
+
+<body class="welcome-bg-body">
+    <!-- Background Video Wrapper Matches Figma perfectly with 20% dark overlay -->
+    <div class="video-container">
+        <video autoplay loop muted playsinline id="bg-video">
+            <source src="assets/background-%20V02.MOV" type="video/mp4">
+        </video>
+        <div class="video-overlay" style="background: rgba(15, 0, 25, 0.4);"></div>
+    </div>
+
+    <!-- Top Navigation -->
+    <header class="welcome-top-nav"
+        style="position: relative; z-index: 20; background: rgba(0,0,0,0.1); border-bottom: 1px solid rgba(255,255,255,0.05);">
+        <div class="nav-brand">
+            <div class="brand-hexagon">
+                <img src="assets/logo.png" alt="Tulip Logo" style="width: 24px; height: 24px; object-fit: contain;">
+            </div>
+            <span>Tulip Gardener</span>
+        </div>
+
+        <div class="nav-center-pill">
+            <a href="menu.html" class="nav-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                Menu
+            </a>
+            <a href="dashboard.html" class="nav-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="9" y1="3" x2="9" y2="21"></line>
+                </svg>
+                Dashboard
+            </a>
+            <a href="profile.html" class="nav-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                Profile
+            </a>
+        </div>
+
+        <div class="nav-actions">
+            <button class="icon-btn" onclick="window.location.href='settings.html'" title="Settings">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path
+                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                    </path>
+                </svg>
+            </button>
+            <button class="icon-btn" onclick="window.location.href='how_to_play.html'" title="How to Play">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+            </button>
+            <!-- User avatar small placeholder matches the design image -->
+            <button class="icon-btn" style="padding:0; border:none; background:none;">
+                <img src="assets/profile-default.png" id="header-user-avatar"
+                    style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; background: #666; display:none;">
+            </button>
+        </div>
+    </header>
+
+    <!-- Header Text matching Figma -->
+    <div class="lb-header-container">
+        <div class="lb-subheading">THE CYBER-NATURE REALM</div>
+        <h1 class="lb-heading">Global Leaderboard</h1>
+        <div class="lb-description">Honoring the elite horticulturalists of the neon digital frontier.</div>
+
+        <div class="lb-tabs">
+            <div class="lb-tab">ALL TIME</div>
+        </div>
+    </div>
+
+    <!-- Main Leaderboard Table matching Figma -->
+    <div class="lb-main-card">
+        <div class="lb-table-header">
+            <div class="lb-rank-col" style="justify-content: flex-start; padding-left: 10px;">RANK</div>
+            <div>GARDENER</div>
+            <div>TULIPS GROWN</div>
+            <div class="lb-status-col">STATUS</div>
+        </div>
+        <div id="leaderboard-container">
+            <!-- Populated via JS -->
+            <p style="text-align:center; padding: 20px; color:#ccc;">Fetching top profiles from the frontier...</p>
+        </div>
+    </div>
+
+    <!-- Bottom Stats matching Figma -->
+    <div class="lb-stats-container">
+        <!-- Card 1 -->
+        <div class="lb-stat-card">
+            <div class="lb-stat-title">YOUR GLOBAL RANK</div>
+            <h2 class="lb-stat-value" id="my-rank">#--</h2>
+            <div class="lb-stat-sub sub-pink" id="my-rank-sub">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="margin-right:4px;">
+                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                    <polyline points="17 6 23 6 23 12"></polyline>
+                </svg>
+                Climbing positions
+            </div>
+            <svg class="lb-stat-icon" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#fff"
+                stroke-width="1.5">
+                <path d="M12 15l-3 4 3-2 3 2-3-4z"></path>
+                <path d="M12 2v13"></path>
+                <circle cx="12" cy="5" r="3"></circle>
+            </svg>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="lb-stat-card">
+            <div class="lb-stat-title">TOTAL TULIPS</div>
+            <h2 class="lb-stat-value" id="my-score">--</h2>
+            <div class="lb-stat-sub sub-purple" id="my-score-sub">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="margin-right:4px;">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                Keep planting!
+            </div>
+            <svg class="lb-stat-icon" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#fff"
+                stroke-width="1.5">
+                <path d="M12 2C7 2 3 6 3 11c0 3 2 6 4 9h10c2-3 4-6 4-9 0-5-4-9-9-9z"></path>
+            </svg>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="lb-stat-card">
+            <div class="lb-stat-title">ELITE THRESHOLD</div>
+            <h2 class="lb-stat-value">850,000</h2>
+            <div class="lb-stat-sub sub-gray" id="elite-sub">
+                -- to rank up
+            </div>
+            <svg class="lb-stat-icon" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#fff"
+                stroke-width="1.5">
+                <circle cx="12" cy="8" r="6"></circle>
+                <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
+            </svg>
+        </div>
+    </div>
+
+    <div class="lb-action-btn-container">
+        <a href="menu.html" class="lb-action-btn">Lets grow more tulipssss</a>
+    </div>
+
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/services/supabaseClient.js"></script>
+    <script src="js/services/UserService.js"></script>
+    <script src="js/controllers/AuthController.js"></script>
+
+    <script>
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        async function loadLeaderboard() {
+            const authed = await AuthController.requireAuth();
+            if (!authed) return;
+
+            try {
+                // Fetch Current User
+                const profile = await UserService.getProfile();
+                const userScore = profile.score || 0;
+                document.getElementById('my-score').innerText = formatNumber(userScore);
+
+                // Show avatar in top right header corner if it exists
+                if (profile.avatar_url && profile.avatar_url !== 'null' && profile.avatar_url !== 'undefined') {
+                    const headerAvatar = document.getElementById('header-user-avatar');
+                    headerAvatar.src = decodeURIComponent(profile.avatar_url);
+                    headerAvatar.style.display = 'block';
+                }
+
+                // Compute rank by checking how many players hold a higher score
+                let myRank = "--";
+                const { count, error: rankError } = await supabaseClient
+                    .from('profiles')
+                    .select('*', { count: 'exact', head: true })
+                    .gt('score', userScore);
+
+                if (!rankError && count !== null) {
+                    myRank = count + 1;
+                    document.getElementById('my-rank').innerText = `#${formatNumber(myRank)}`;
+
+                    if (myRank === 1) {
+                        document.getElementById('my-rank-sub').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg> You reign supreme!`;
+                    } else {
+                        document.getElementById('my-rank-sub').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg> Climbing +${formatNumber(Math.floor(Math.random() * 10) + 2)} positions`; // visual flare matching Figma string
+                    }
+
+                    if (myRank <= 100) {
+                        document.getElementById('my-score-sub').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Top 5% of Realm`;
+                    }
+                }
+
+                const threshold = 850000;
+                const remaining = Math.max(0, threshold - userScore);
+                if (remaining > 0) {
+                    let textAmount = remaining >= 1000 ? (remaining / 1000).toFixed(1) + 'k' : formatNumber(remaining);
+                    document.getElementById('elite-sub').innerText = `${textAmount} to rank up`;
+                } else {
+                    document.getElementById('elite-sub').innerText = `Elite Status Reached!`;
+                    document.getElementById('elite-sub').style.color = '#B347FF';
+                }
+
+                // Fetch top 50 users for leaderboard
+                const { data, error } = await supabaseClient
+                    .from('profiles')
+                    .select('username, score, avatar_url')
+                    .order('score', { ascending: false })
+                    .limit(50);
+
+                if (error) throw error;
+
+                const container = document.getElementById('leaderboard-container');
+                container.innerHTML = '';
+
+                if (data.length === 0) {
+                    container.innerHTML = '<p style="text-align:center; color:#ccc; padding: 20px;">No players yet.</p>';
+                    return;
+                }
+
+                data.forEach((p, index) => {
+                    const row = document.createElement('div');
+                    row.className = 'lb-row';
+
+                    let rankClass = '';
+                    let pillClass = 'pill-intermediate';
+                    let pillText = 'INTERMEDIATE';
+                    let levelText = 'Cultivator';
+
+                    let score = p.score || 0;
+                    if (index === 0) { rankClass = 'rank-1'; pillClass = 'pill-gold'; pillText = 'GOLD'; levelText = 'Grand Master'; }
+                    else if (index === 1) { rankClass = 'rank-2'; pillClass = 'pill-silver'; pillText = 'SILVER'; levelText = 'Elite Architect'; }
+                    else if (index === 2) { rankClass = 'rank-3'; pillClass = 'pill-bronze'; pillText = 'BRONZE'; levelText = 'Techno Shaman'; }
+                    else if (score >= 100000) { pillClass = 'pill-pro'; pillText = 'PRO'; levelText = 'Senior Cultivator'; }
+                    else { pillClass = 'pill-intermediate'; pillText = 'INTERMEDIATE'; levelText = 'Cultivator'; }
+
+                    const avatarUrl = (p.avatar_url && p.avatar_url !== 'null' && p.avatar_url !== 'undefined') ? decodeURIComponent(p.avatar_url) : '';
+                    let avatarHtml = `<img src="${avatarUrl}" class="lb-avatar" alt="Avatar" onerror="this.onerror=null; this.src='assets/logo.png';">`;
+                    if (!avatarUrl) avatarHtml = `<div class="lb-avatar" style="background:#B347FF; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.4rem;">${(p.username || 'S')[0].toUpperCase()}</div>`;
+
+                    // Generate ascending arrow text for top users to replicate the aesthetic
+                    let scoreSubHtml = '';
+                    if (index < 3) {
+                        let k = Math.floor(Math.random() * 20) + 5;
+                        scoreSubHtml = `<span class="lb-score-sub">↑ ${k}k today</span>`;
+                    }
+
+                    row.innerHTML = `
+                        <div class="lb-rank-col">
+                            <div class="lb-rank-circle ${rankClass}">${index + 1}</div>
+                        </div>
+                        <div class="lb-gardener-col">
+                            ${avatarHtml}
+                            <div class="lb-name-block">
+                                <span class="lb-name">${p.username || 'Anonymous'}</span>
+                                <span class="lb-level">${levelText}</span>
+                            </div>
+                        </div>
+                        <div class="lb-score-col">
+                            <span class="lb-score">${formatNumber(score)}</span>
+                            ${scoreSubHtml}
+                        </div>
+                        <div class="lb-status-col">
+                            <div class="lb-pill ${pillClass}">${pillText}</div>
+                        </div>
+                    `;
+                    container.appendChild(row);
+                });
+
+            } catch (err) {
+                console.error('Leaderboard load error:', err);
+                document.getElementById('leaderboard-container').innerHTML =
+                    '<p style="color:#FF3366;text-align:center; padding: 20px;">Netrunner anomaly detected. Failed to fetch scores.</p>';
+            }
+        }
+        loadLeaderboard();
+    </script>
+
+    <!-- Global Floating Action Buttons -->
+    <div class="global-fab-container">
+        <a href="menu.html" class="fab-btn fab-play" title="Play Game">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+        </a>
+        <a href="leaderboard.html" class="fab-btn fab-leaderboard active" title="Leaderboard">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20v-6"></path>
+                <path d="M6 20V10"></path>
+                <path d="M18 20V4"></path>
+            </svg>
+        </a>
+    </div>
+
+    <!-- Global Copyright Footer -->
+    <div class="global-copyright">
+        &copy; sanduni kaveesha basnayaka 2541893 game project
+    </div>
+</body>
+
+</html>
