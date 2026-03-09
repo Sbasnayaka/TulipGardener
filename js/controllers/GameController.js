@@ -33,8 +33,10 @@ class GameController {
         // Fetch puzzle
         await this.loadPuzzle();
 
-        // Start timer for all modes
+        // Start timer if not beginner
+        if (this.mode !== 'beginner') {
         this.startTimer();
+    }
     }
 
     /**
@@ -83,7 +85,11 @@ class GameController {
      */
     updateTimerDisplay() {
         const timerEl = document.getElementById('timer-display');
+        if (this.mode === 'beginner') {
+            timerEl.innerText = '∞ Unlimited';
+        } else {
         timerEl.innerText = `⏱ ${this.timeLeft}s`;
+    }
     }
 
     /**
