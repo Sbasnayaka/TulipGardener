@@ -35,6 +35,29 @@
         }
 
 
+        /* Back Button Override for Game Page*/
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            z-index: 50;
+            transition: transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-btn:hover {
+            transform: scale(1.08);
+        }
+
         .game-card {
             background: rgba(30, 30, 30, 0.6);
             backdrop-filter: blur(15px);

@@ -33,6 +33,9 @@ class GameController {
         // Fetch puzzle
         await this.loadPuzzle();
 
+        // Track start time
+        this.startTime = Date.now();
+
         // Update timer display immediately upon load
         this.updateTimerDisplay();
 
@@ -114,9 +117,12 @@ class GameController {
             // Stop timer
             if (this.timerInterval) clearInterval(this.timerInterval);
 
+            // Calculate time taken
+            const timeTaken = Math.max(1, Math.floor((Date.now() - this.startTime) / 1000));
+
             // Update score in Supabase via UserService
             try {
-                const result = await UserService.incrementScore();
+                const result = await UserService.incrementScore(timeTaken);
                 this.showCelebration(result.score);
             } catch (error) {
                 console.error('Score update failed:', error);

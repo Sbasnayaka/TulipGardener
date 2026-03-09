@@ -104,14 +104,22 @@ class UserService {
     }
 
     /**
-     * Update the user's score. Increments by 1 and updates best_record if needed.
+     * Update the user's score. Increments by 1 and updates best_record if needed (fastest speed in seconds).
      */
-    static async incrementScore() {
+    static async incrementScore(timeTaken) {
         const profile = await this.getProfile();
         if (!profile) throw new Error('No profile found');
 
         const newScore = profile.score + 1;
-        const newBest = Math.max(profile.best_record, newScore);
+
+        // Update best_record to store the fastest time resolving a puzzle
+        let newBest = profile.best_record;
+        if (timeTaken !== undefined) {
+            // Uninitialized or strict improvement
+            if (newBest === 0 || timeTaken < newBest) {
+                newBest = timeTaken;
+            }
+        }
 
         const { error } = await supabaseClient
             .from('profiles')

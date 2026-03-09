@@ -133,15 +133,7 @@
                             <span id="p-level">Beginner</span>
                         </div>
                     </div>
-                    <!-- Dummy Button for UX completeness based on sketch -->
-                    <button class="prof-edit-btn">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 20h9"></path>
-                            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-                        </svg>
-                        Edit Profile
-                    </button>
+
                 </div>
 
                 <div class="prof-divider-line"></div>
@@ -265,7 +257,7 @@
                 document.getElementById('p-username').innerText = profile.username || 'Player';
                 document.getElementById('p-score').innerText = profile.score || 0;
                 document.getElementById('p-tulips').innerText = profile.score || 0;
-                document.getElementById('p-best').innerText = profile.best_record || 0;
+                document.getElementById('p-best').innerText = profile.best_record ? profile.best_record + 's' : '--';
 
                 if (profile.avatar_url && profile.avatar_url !== 'null' && profile.avatar_url !== 'undefined') {
                     document.getElementById('profile-avatar').src = decodeURIComponent(profile.avatar_url);
@@ -281,9 +273,17 @@
                 else if (profile.score >= 3) level = 'Intermediate';
                 document.getElementById('p-level').innerText = level;
 
-                // Fake "Rank" computation since no leaderboard endpoint is formally spec'd right now
-                // Purely visual mapping to score so it feels alive
-                document.getElementById('p-rank').innerText = '#' + Math.max(1, (1000 - (profile.score * 5)));
+                // Accurate Rank computation: Count players with a higher score than current user
+                const { count, error: rankError } = await supabaseClient
+                    .from('profiles')
+                    .select('score', { count: 'exact', head: true })
+                    .gt('score', profile.score || 0);
+
+                if (!rankError) {
+                    document.getElementById('p-rank').innerText = '#' + ((count || 0) + 1);
+                } else {
+                    document.getElementById('p-rank').innerText = '#--';
+                }
 
                 // Milestone progress calculation Logic
                 let nextGoal = 50;
