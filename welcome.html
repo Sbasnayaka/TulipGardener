@@ -115,14 +115,14 @@
                     d="M8 21h8M12 17v4M7 4h10M6 4c-2.5 0-4 2-4 4s2 4 4 4h1v1c0 2.5 2 4 5 4s5-1.5 5-4v-1h1c2 0 4-2 4-4s-1.5-4-4-4">
                 </path>
             </svg>
-            <span>RANK: NOVICE</span>
+            <span id="stat-rank">RANK: NOVICE</span>
         </div>
         <div class="stat-block">
             <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                 stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
             </svg>
-            <span>PUZZLES: 0</span>
+            <span id="stat-puzzles">PUZZLES: 0</span>
         </div>
         <div class="stat-block">
             <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -130,23 +130,75 @@
                 <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 3c-1.5 2-2 3.5-3.1 9.2A7 7 0 0 1 11 20z M11 20v2">
                 </path>
             </svg>
-            <span>GARDEN: EMPTY</span>
+            <span id="stat-garden">GARDEN: EMPTY</span>
         </div>
     </footer>
 
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const username = urlParams.get('username') || 'Player';
-        const avatar = urlParams.get('avatar');
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/services/supabaseClient.js"></script>
+    <script src="js/services/UserService.js"></script>
+    <script src="js/controllers/AuthController.js"></script>
 
-        document.getElementById('welcome-username').innerText = username;
-        if (avatar && avatar !== 'null' && avatar !== 'undefined') {
-            document.getElementById('user-avatar').src = decodeURIComponent(avatar);
-        } else {
-            // Fallback avatar background color if image fails or missing
-            document.getElementById('user-avatar').style.display = 'none';
-            document.querySelector('.welcome-avatar-wrapper').style.background = '#A013EC';
+    <script>
+        async function initWelcome() {
+            // Initial URL fallback checks
+            const urlParams = new URLSearchParams(window.location.search);
+            let username = urlParams.get('username') || 'Player';
+            let avatar = urlParams.get('avatar');
+
+            // Secure Authentication Overrides
+            const authed = await AuthController.getCurrentUser();
+            if (authed) {
+                try {
+                    const profile = await UserService.getProfile();
+                    if (profile) {
+                        username = profile.username || username;
+                        avatar = profile.avatar_url;
+                        const score = profile.score || 0;
+
+                        // Puzzles count is equivalent to total solved correctly (score)
+                        document.getElementById('stat-puzzles').innerText = `PUZZLES: ${score}`;
+
+                        // Garden count logic
+                        document.getElementById('stat-garden').innerText = score > 0 ? `GARDEN: ${score} TULIPS` : 'GARDEN: EMPTY';
+
+                        // Rank Database Query logic
+                        const { count, error } = await supabaseClient
+                            .from('profiles')
+                            .select('score', { count: 'exact', head: true })
+                            .gt('score', score);
+
+                        if (!error && count !== null) {
+                            document.getElementById('stat-rank').innerText = `RANK: #${count + 1}`;
+                        } else {
+                            document.getElementById('stat-rank').innerText = `RANK: #--`;
+                        }
+
+                        // Unlock Links
+                        document.querySelectorAll('.disabled-link').forEach(el => el.classList.remove('disabled-link'));
+                    }
+                } catch (e) {
+                    console.error("Failed to load user stat block", e);
+                }
+            }
+
+            // Sync visual UI elements
+            document.getElementById('welcome-username').innerText = username;
+
+            if (avatar && avatar !== 'null' && avatar !== 'undefined') {
+                const avatarImg = document.getElementById('user-avatar');
+                avatarImg.src = decodeURIComponent(avatar);
+                avatarImg.style.display = 'block';
+                document.querySelector('.welcome-avatar-wrapper').style.background = 'transparent';
+            } else {
+                // Fallback avatar background color if image fails or missing
+                document.getElementById('user-avatar').style.display = 'none';
+                document.querySelector('.welcome-avatar-wrapper').style.background = '#A013EC';
+            }
         }
+
+        initWelcome();
     </script>
     <!-- Global Floating Action Buttons -->
     <div class="global-fab-container">
