@@ -45,4 +45,4 @@ class AudioController {
 }
 
 // Initialize globally as soon as script runs
-const globalAudio = new AudioController();
+window.globalAudio = new AudioController();
