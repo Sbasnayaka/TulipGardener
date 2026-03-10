@@ -8,7 +8,10 @@ class AudioController {
     constructor() {
         this.audio = new Audio('assets/background song.mp3');
         this.audio.loop = true;
-        this.audio.volume = 0.3; // Gentle background ambiance
+        // Load background volume from settings if available
+        const savedVolume = localStorage.getItem('bgVolume');
+        this.audio.volume = savedVolume !== null ? parseFloat(savedVolume) : 0.3; // Default 30% volume
+
         
         // Attempt to load previous playback time
         const savedTime = sessionStorage.getItem('bgMusicTime');

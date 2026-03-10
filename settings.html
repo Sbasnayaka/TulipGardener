@@ -91,15 +91,9 @@
                 style="background: rgba(255,255,255,0.08); padding: 20px; border-radius: 15px; margin-bottom: 20px; text-align: left;">
                 <h3 style="color:#fff; margin-bottom: 10px; font-weight: 600;">Audio</h3>
                 <div
-                    style="display:flex; justify-content: space-between; align-items:center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 15px;">
+                    style="display:flex; justify-content: space-between; align-items:center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
                     <span style="color:#ddd; font-size:1.1rem;">Music Volume</span>
-                    <input type="range" class="form-control" style="width: 50%;" value="70">
-                </div>
-                <div style="display:flex; justify-content: space-between; align-items:center;">
-                    <span style="color:#ddd; font-size:1.1rem;">Sound Effects</span>
-                    <div
-                        style="background:#87eb8f; color:#000; padding: 5px 15px; border-radius: 20px; font-weight:600; cursor:pointer;">
-                        ON</div>
+                    <input type="range" id="music-volume" class="form-control" style="width: 50%;" min="0" max="100" value="30">
                 </div>
             </div>
 
@@ -116,6 +110,23 @@
 
     <script>
         AuthController.requireAuth();
+
+        // Volume System Engine Setup
+        document.addEventListener('DOMContentLoaded', () => {
+            const volSlider = document.getElementById('music-volume');
+            if (volSlider && window.globalAudio) {
+                // Initialize visual slider track to match loaded AudioController state
+                volSlider.value = Math.round(globalAudio.audio.volume * 100);
+
+                // Listen for movement and seamlessly adjust music logic
+                volSlider.addEventListener('input', (e) => {
+                    const mappedVol = e.target.value / 100;
+                    globalAudio.audio.volume = mappedVol;
+                    localStorage.setItem('bgVolume', mappedVol); // Persist across visits endlessly
+                });
+            }
+        });
+
         function createShinyPetals() {
             const container = document.querySelector('.petals-container');
             if (!container) return;
