@@ -2370,12 +2370,6 @@ body.auth-body {
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.p-mini-badge:hover {
-    background: rgba(255, 255, 255, 0.1);
 }
 
 .active-star-badge {
