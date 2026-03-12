@@ -203,13 +203,14 @@
         }
 
         .lb-pill {
-            padding: 6px 14px;
+            padding: 6px 16px;
             border-radius: 20px;
             font-size: 0.7rem;
             font-weight: 700;
             text-transform: uppercase;
             text-align: center;
-            width: 90px;
+            min-width: 90px;
+            white-space: nowrap;
             border: 1px solid transparent;
             background: rgba(255, 255, 255, 0.05);
             color: #888;
@@ -343,7 +344,7 @@
         }
 
         #leaderboard-container {
-            max-height: 400px;
+            max-height: 600px;
             overflow-y: auto;
             padding-right: 5px;
         }
@@ -605,13 +606,6 @@
                     let avatarHtml = `<img src="${avatarUrl}" class="lb-avatar" alt="Avatar" onerror="this.onerror=null; this.src='assets/logo.png';">`;
                     if (!avatarUrl) avatarHtml = `<div class="lb-avatar" style="background:#B347FF; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.4rem;">${(p.username || 'S')[0].toUpperCase()}</div>`;
 
-                    // Generate ascending arrow text for top users to replicate the aesthetic
-                    let scoreSubHtml = '';
-                    if (index < 3) {
-                        let k = Math.floor(Math.random() * 20) + 5;
-                        scoreSubHtml = `<span class="lb-score-sub">↑ ${k}k today</span>`;
-                    }
-
                     row.innerHTML = `
                         <div class="lb-rank-col">
                             <div class="lb-rank-circle ${rankClass}">${index + 1}</div>
@@ -625,7 +619,6 @@
                         </div>
                         <div class="lb-score-col">
                             <span class="lb-score">${formatNumber(score)}</span>
-                            ${scoreSubHtml}
                         </div>
                         <div class="lb-status-col">
                             <div class="lb-pill ${pillClass}">${pillText}</div>
