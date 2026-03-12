@@ -34,6 +34,54 @@
             transition: opacity 1.5s ease;
         }
 
+        /* Times Up Blur Overlay */
+        #timesup-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 8000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(14, 2, 25, 0.75);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            animation: fadeInOverlay 0.4s ease forwards;
+        }
+        @keyframes fadeInOverlay {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        .timesup-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            animation: shakeIcon 0.5s ease;
+        }
+        @keyframes shakeIcon {
+            0%, 100% { transform: rotate(0deg); }
+            25%  { transform: rotate(-15deg); }
+            75%  { transform: rotate(15deg); }
+        }
+        .timesup-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #FF3366;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        .timesup-sub {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.6);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .timesup-countdown {
+            margin-top: 24px;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #B347FF;
+        }
+
 
         /* Back Button Override for Game Page*/
         .back-btn {
@@ -158,6 +206,14 @@
         }
         createShinyPetals();
     </script>
+
+    <!-- ═══ Time's Up Overlay ═══ -->
+    <div id="timesup-overlay">
+        <div class="timesup-icon">⏰</div>
+        <div class="timesup-title">TIME'S UP!</div>
+        <div class="timesup-sub">RESTARTING PUZZLE...</div>
+        <div class="timesup-countdown" id="timesup-counter">3</div>
+    </div>
 
     <!-- ═══ Celebration Overlay ═══ -->
     <div id="celebration" class="celebration-overlay">

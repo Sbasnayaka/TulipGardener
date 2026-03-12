@@ -80,10 +80,32 @@ class GameController {
             this.updateTimerDisplay();
             if (this.timeLeft <= 0) {
                 clearInterval(this.timerInterval);
-                alert("⏰ Time's up! Try again.");
-                location.reload();
+                this.showTimesUp();
             }
         }, 1000);
+    }
+
+    /**
+     * Show the "Time's Up!" blur overlay and countdown before reload.
+     */
+    showTimesUp() {
+        const overlay = document.getElementById('timesup-overlay');
+        if (overlay) {
+            overlay.style.display = 'flex';
+            let count = 3;
+            const counterEl = document.getElementById('timesup-counter');
+            const countdown = setInterval(() => {
+                count--;
+                if (counterEl) counterEl.innerText = count;
+                if (count <= 0) {
+                    clearInterval(countdown);
+                    location.reload();
+                }
+            }, 1000);
+        } else {
+            // Fallback if overlay doesn't exist
+            location.reload();
+        }
     }
 
     /**
