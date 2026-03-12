@@ -268,7 +268,10 @@
         <div class="emoji-flower">🌷</div>
         <h2>Tulip Grown! 🎉</h2>
         <p style="color: #ccc; margin-top: 5px;">Score: <span id="celebration-score">0</span></p>
-        <a href="dashboard.html" class="btn btn-primary" style="margin-top: 15px; border-color: #fff;">Go to Garden</a>
+        <div style="display:flex; flex-direction:column; gap: 10px; margin-top: 15px; width: 100%;">
+            <a href="dashboard.html" class="btn btn-primary" style="border-color: #fff; text-align:center;">Go to Garden</a>
+            <button onclick="location.reload()" class="btn" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color:#fff; padding: 12px; border-radius: 40px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">🌱 Play Another Round</button>
+        </div>
     </div>
 
     <!-- ═══ Game UI ═══ -->
