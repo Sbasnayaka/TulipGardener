@@ -15,6 +15,7 @@ class GameController {
         this.currentSolution = null;
         this.timerInterval = null;
         this.timeLeft = 0;
+        this.overlayActive = false; // Prevent double overlays
     }
 
     /**
@@ -89,6 +90,11 @@ class GameController {
      * Show the "Time's Up!" blur overlay and countdown before reload.
      */
     showTimesUp() {
+        // If incorrect overlay is already showing, just reload silently
+        if (this.overlayActive) {
+            location.reload();
+            return;
+        }
         const overlay = document.getElementById('timesup-overlay');
         if (overlay) {
             overlay.style.display = 'flex';
@@ -163,6 +169,7 @@ class GameController {
     showIncorrect() {
         const overlay = document.getElementById('incorrect-overlay');
         if (!overlay) return;
+        this.overlayActive = true; // Block timesup overlay from stacking
         overlay.style.display = 'flex';
         overlay.style.opacity = '1';
         // Auto-dismiss after 1.8 seconds with a fade
@@ -173,6 +180,7 @@ class GameController {
                 overlay.style.display = 'none';
                 overlay.style.transition = '';
                 overlay.style.opacity = '1';
+                this.overlayActive = false; // Allow future overlays again
             }, 500);
         }, 1800);
     }
