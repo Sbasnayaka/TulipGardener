@@ -151,10 +151,30 @@ class GameController {
                 this.showCelebration(0); // Still celebrate even if save fails
             }
         } else {
-            alert('❌ Incorrect! Try again.');
+            this.showIncorrect();
             document.getElementById('answer-input').value = '';
             if (submitBtn) submitBtn.classList.remove('btn-fade');
         }
+    }
+
+    /**
+     * Show the "Incorrect!" blur overlay briefly and then fade it out.
+     */
+    showIncorrect() {
+        const overlay = document.getElementById('incorrect-overlay');
+        if (!overlay) return;
+        overlay.style.display = 'flex';
+        overlay.style.opacity = '1';
+        // Auto-dismiss after 1.8 seconds with a fade
+        setTimeout(() => {
+            overlay.style.transition = 'opacity 0.5s ease';
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                overlay.style.transition = '';
+                overlay.style.opacity = '1';
+            }, 500);
+        }, 1800);
     }
 
     /**

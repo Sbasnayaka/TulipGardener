@@ -82,6 +82,46 @@
             color: #B347FF;
         }
 
+        /* Incorrect Answer Blur Overlay */
+        #incorrect-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 7000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(30, 0, 10, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            animation: fadeInOverlay 0.3s ease forwards;
+        }
+        .incorrect-icon {
+            font-size: 4rem;
+            animation: wrongShake 0.4s ease;
+        }
+        @keyframes wrongShake {
+            0%   { transform: translateX(0); }
+            20%  { transform: translateX(-12px); }
+            40%  { transform: translateX(12px); }
+            60%  { transform: translateX(-8px); }
+            80%  { transform: translateX(8px); }
+            100% { transform: translateX(0); }
+        }
+        .incorrect-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #FF3366;
+            margin: 12px 0 8px 0;
+            letter-spacing: 2px;
+        }
+        .incorrect-sub {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.5);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
 
         /* Back Button Override for Game Page*/
         .back-btn {
@@ -206,6 +246,13 @@
         }
         createShinyPetals();
     </script>
+
+    <!-- ═══ Incorrect Answer Overlay ═══ -->
+    <div id="incorrect-overlay">
+        <div class="incorrect-icon">❌</div>
+        <div class="incorrect-title">INCORRECT!</div>
+        <div class="incorrect-sub">TRY AGAIN...</div>
+    </div>
 
     <!-- ═══ Time's Up Overlay ═══ -->
     <div id="timesup-overlay">
