@@ -48,20 +48,39 @@
             -webkit-backdrop-filter: blur(14px);
             animation: fadeInOverlay 0.4s ease forwards;
         }
+
         @keyframes fadeInOverlay {
-            from { opacity: 0; }
-            to   { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
+
         .timesup-icon {
             font-size: 4rem;
             margin-bottom: 16px;
             animation: shakeIcon 0.5s ease;
         }
+
         @keyframes shakeIcon {
-            0%, 100% { transform: rotate(0deg); }
-            25%  { transform: rotate(-15deg); }
-            75%  { transform: rotate(15deg); }
+
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(-15deg);
+            }
+
+            75% {
+                transform: rotate(15deg);
+            }
         }
+
         .timesup-title {
             font-size: 2.5rem;
             font-weight: 800;
@@ -69,12 +88,14 @@
             margin-bottom: 10px;
             letter-spacing: 2px;
         }
+
         .timesup-sub {
             font-size: 1rem;
-            color: rgba(255,255,255,0.6);
+            color: rgba(255, 255, 255, 0.6);
             font-weight: 600;
             letter-spacing: 1px;
         }
+
         .timesup-countdown {
             margin-top: 24px;
             font-size: 1.8rem;
@@ -96,18 +117,38 @@
             -webkit-backdrop-filter: blur(12px);
             animation: fadeInOverlay 0.3s ease forwards;
         }
+
         .incorrect-icon {
             font-size: 4rem;
             animation: wrongShake 0.4s ease;
         }
+
         @keyframes wrongShake {
-            0%   { transform: translateX(0); }
-            20%  { transform: translateX(-12px); }
-            40%  { transform: translateX(12px); }
-            60%  { transform: translateX(-8px); }
-            80%  { transform: translateX(8px); }
-            100% { transform: translateX(0); }
+            0% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-12px);
+            }
+
+            40% {
+                transform: translateX(12px);
+            }
+
+            60% {
+                transform: translateX(-8px);
+            }
+
+            80% {
+                transform: translateX(8px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
         }
+
         .incorrect-title {
             font-size: 2.2rem;
             font-weight: 800;
@@ -115,9 +156,10 @@
             margin: 12px 0 8px 0;
             letter-spacing: 2px;
         }
+
         .incorrect-sub {
             font-size: 1rem;
-            color: rgba(255,255,255,0.5);
+            color: rgba(255, 255, 255, 0.5);
             font-weight: 600;
             letter-spacing: 1px;
         }
@@ -268,9 +310,13 @@
         <div class="emoji-flower">🌷</div>
         <h2>Tulip Grown! 🎉</h2>
         <p style="color: #ccc; margin-top: 5px;">Score: <span id="celebration-score">0</span></p>
-        <div style="display:flex; flex-direction:column; gap: 10px; margin-top: 15px; width: 100%;">
-            <a href="dashboard.html" class="btn btn-primary" style="border-color: #fff; text-align:center;">Go to Garden</a>
-            <button onclick="location.reload()" class="btn" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color:#fff; padding: 12px; border-radius: 40px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">🌱 Play Another Round</button>
+        <div style="display:flex; flex-direction:column; gap: 10px; margin-top: 15px;">
+            <a href="dashboard.html" class="btn btn-primary" style="border-color: #fff; text-align:center;">Go to
+                Garden</a>
+            <button onclick="location.reload()" class="btn"
+                style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color:#fff; padding: 12px; border-radius: 40px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background 0.2s;"
+                onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                onmouseout="this.style.background='rgba(255,255,255,0.1)'">🌱 Play Another Round</button>
         </div>
     </div>
 
@@ -376,4 +422,5 @@
     </div>
     <script src="js/controllers/AudioController.js"></script>
 </body>
+
 </html>
