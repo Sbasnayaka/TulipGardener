@@ -1,6 +1,4 @@
 /**
- * GameController.js
- * ------------------
  * SINGLE RESPONSIBILITY: Manage the game loop, timer, and scoring.
  * 
  * LOW COUPLING: Uses HeartApiService for puzzles, UserService for scores.

@@ -1,6 +1,4 @@
 /**
- * UserService.js
- * ---------------
  * SINGLE RESPONSIBILITY: All user-related operations (Auth + Profile Data).
  * 
  * HIGH COHESION: Everything about the "User" concept lives here.
@@ -34,7 +32,7 @@ class UserService {
 
         const dummyEmail = `${username}@tulipgardener.local`;
 
-        // 1. Create auth user
+        // Create auth user
         const { data, error } = await supabaseClient.auth.signUp({
             email: dummyEmail,
             password: password,
@@ -42,10 +40,10 @@ class UserService {
 
         if (error) throw error;
 
-        // 2. Generate DiceBear avatar
+        // Generate DiceBear avatar
         const avatarUrl = `https://api.dicebear.com/7.x/pixel-art/svg?seed=${encodeURIComponent(username)}`;
 
-        // 3. Create profile in `profiles` table
+        // Create profile in `profiles` table
         const { error: profileError } = await supabaseClient
             .from('profiles')
             .insert({

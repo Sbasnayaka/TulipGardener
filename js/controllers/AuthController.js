@@ -1,6 +1,4 @@
 /**
- * AuthController.js
- * ------------------
  * SINGLE RESPONSIBILITY: Handle authentication UI interactions.
  * 
  * LOW COUPLING: This controller talks to UserService methods.

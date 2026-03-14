@@ -1,6 +1,4 @@
 /**
- * HeartApiService.js
- * -------------------
  * SINGLE RESPONSIBILITY: Fetch puzzles from the Heart API.
  * 
  * HIGH COHESION: This module ONLY knows about the Heart API.

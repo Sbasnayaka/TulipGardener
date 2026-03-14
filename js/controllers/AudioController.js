@@ -1,5 +1,4 @@
 /**
- * AudioController.js
  * Handles global background music across the MPA (Multi-Page Application).
  * Uses sessionStorage to persist the playback time between page loads,
  * creating the illusion of a single continuous track.
@@ -20,7 +19,7 @@ class AudioController {
         }
 
         // Try playing immediately
-        // Note: Modern browsers require a user interaction first.
+        // Modern browsers require a user interaction first.
         // If it fails, we fall back to waiting for a click.
         this.playAudio();
 

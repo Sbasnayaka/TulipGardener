@@ -32,7 +32,7 @@ body {
     background-image: radial-gradient(circle at 50% 50%, #2a0a3d 0%, var(--bg-color) 70%);
 }
 
-/* ── Container ── */
+/*  Container  */
 .container {
     width: 100%;
     max-width: 480px;
@@ -48,7 +48,7 @@ body {
     max-width: 900px;
 }
 
-/* ── Card ── */
+/*  Card  */
 .card {
     background: var(--card-bg);
     color: var(--card-text);
@@ -61,7 +61,7 @@ body {
     animation: fadeIn 0.6s ease-out;
 }
 
-/* ── Buttons ── */
+/*  Buttons  */
 .btn {
     background: transparent;
     border: 2px solid #222;
@@ -94,7 +94,7 @@ body {
     border-color: var(--mardi-gras);
 }
 
-/* ── Typography ── */
+/*  Typography  */
 h1 {
     font-size: 1.8rem;
     margin-bottom: 20px;
@@ -136,7 +136,7 @@ h2 {
     box-shadow: 0 0 0 3px rgba(168, 102, 190, 0.2);
 }
 
-/* ── Nav Pill ── */
+/*  Nav Pill  */
 .nav-pill {
     display: flex;
     border: 3px solid #222;
@@ -167,7 +167,7 @@ h2 {
     background: #f0f0f0;
 }
 
-/* ── Avatar ── */
+/*  Avatar  */
 .avatar-circle {
     width: 130px;
     height: 130px;
@@ -184,7 +184,7 @@ h2 {
     object-fit: cover;
 }
 
-/* ── Gate Animation ── */
+/*  Gate Animation  */
 .gate-container {
     width: 260px;
     height: 350px;
@@ -253,7 +253,7 @@ h2 {
     z-index: 10;
 }
 
-/* ── Game Layout ── */
+/*  Game Layout  */
 .game-grid {
     display: grid;
     grid-template-columns: 1fr 1.5fr;
@@ -293,7 +293,7 @@ h2 {
     max-height: 280px;
 }
 
-/* ── Dashboard Grid ── */
+/*  Dashboard Grid  */
 .dashboard-layout {
     display: grid;
     grid-template-columns: 1fr 1.5fr;
@@ -346,7 +346,7 @@ h2 {
     background: var(--olivine);
 }
 
-/* ── Mode Selection Circles ── */
+/*  Mode Circles  */
 .mode-container {
     display: flex;
     justify-content: space-around;
@@ -375,7 +375,7 @@ h2 {
     border-color: var(--amethyst);
 }
 
-/* ── Profile Layout ── */
+/*  Profile Layout  */
 .profile-layout {
     display: flex;
     align-items: center;
@@ -458,7 +458,7 @@ h2 {
     }
 }
 
-/* ── Error Message ── */
+/*  Error Message  */
 .error-msg {
     color: #d32f2f;
     margin-top: 10px;
@@ -466,7 +466,7 @@ h2 {
     display: none;
 }
 
-/* ── Utility ── */
+/*  Utility  */
 .hidden {
     display: none !important;
 }
@@ -495,7 +495,7 @@ h2 {
     color: #222;
 }
 
-/* ── Animations ── */
+/*  Animations  */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -508,28 +508,24 @@ h2 {
     }
 }
 
-/* ── Timer ── */
+/*  Timer  */
 #timer-display {
     font-size: 1.3rem;
     font-weight: 700;
     color: var(--mardi-gras);
 }
 
-/* ========================================= */
-/* PIXEL-PERFECT HOMEPAGE REDESIGN (ISOLATED) */
-/* ========================================= */
+/*  Homepage  */
 :root {
     --home-bg-main: #1A0031;
     --home-glow-color: rgba(160, 19, 236, 0.2);
     --home-pill-bg: rgba(72, 28, 104, 0.6);
     --home-card-bg: rgba(255, 255, 255, 0.03);
     --home-card-border: rgba(255, 255, 255, 0.08);
-    /* Very faint glass border */
     --home-text-primary: #FFFFFF;
     --home-text-secondary: #B39DCD;
     --home-text-tertiary: #7A5E95;
     --home-text-loading: #4A2B66;
-    /* Deep dark purple for exact match */
     --home-btn-text: #FFFFFF;
 }
 
@@ -545,11 +541,9 @@ body.home-body {
     justify-content: center;
     min-height: 100vh;
     overflow: hidden;
-    /* Avoid scrollbars from glow orbs */
     position: relative;
     z-index: 1;
     background-image: none;
-    /* override previous body */
 }
 
 /* Glow Orbs */
@@ -641,13 +635,11 @@ body.home-body {
     width: 200px;
     height: 300px;
     border-radius: 100px;
-    /* Exact arch shape */
     overflow: hidden;
     position: relative;
     margin-bottom: 24px;
     box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
     background: #0d0015;
-    /* Fallback for missing img */
 }
 
 .home-image-container img {
@@ -773,9 +765,7 @@ body.home-body {
     }
 }
 
-/* ========================================= */
-/* PIXEL-PERFECT LOADING SCREEN (ISOLATED)   */
-/* ========================================= */
+/*  Loading Screen  */
 :root {
     --loading-bg-main: #1A0031;
     --loading-card-bg: rgba(255, 255, 255, 0.04);
@@ -801,7 +791,6 @@ body.loading-body {
     position: relative;
     z-index: 1;
     background-image: none;
-    /* override default */
 }
 
 /* Reusing exact glow orbs from home */
@@ -833,9 +822,7 @@ body.loading-body {
     right: -10%;
 }
 
-/* Main Layout - Glass Pill Removed to Match New UI */
 .loading-main-card {
-    /* Full width/height, removed background/borders to float freely */
     width: 100%;
     height: 100%;
     display: flex;
@@ -856,10 +843,8 @@ body.loading-body {
     border: 2px solid #000;
     position: relative;
     perspective: 1200px;
-    /* For 3D door swing effect */
 }
 
-/* Magical core hidden behind doors */
 .magical-core {
     position: absolute;
     top: 0;
@@ -929,7 +914,6 @@ body.loading-body {
     position: relative;
     box-sizing: border-box;
     z-index: 2;
-    /* In front of magical core */
     transform-style: preserve-3d;
 }
 
@@ -1019,9 +1003,7 @@ body.loading-body {
     }
 }
 
-/* ========================================= */
-/* OPENED DOOR ANIMATIONS & INTERIOR UI      */
-/* ========================================= */
+/*  Opened Door Animations & Interior UI  */
 
 .lets-go-text {
     position: relative;
@@ -1175,9 +1157,7 @@ body.loading-body {
     }
 }
 
-/* ========================================= */
-/* NEW CLOSED DOOR UI ELEMENTS                 */
-/* ========================================= */
+/*  Closed Door UI Elements  */
 
 .open-door-btn {
     background: linear-gradient(90deg, #A866BE 0%, #A013EC 100%);
@@ -1256,9 +1236,7 @@ body.loading-body {
     }
 }
 
-/* ========================================= */
-/* 100 FLOATING SHINING SWARM PARTICLES      */
-/* ========================================= */
+/* 100 Floating Shining Swarm Particles  */
 
 .sparkle-target {
     position: absolute;
@@ -1279,7 +1257,6 @@ body.loading-body {
     box-shadow: 0 0 8px #FFF, 0 0 15px #A013EC;
     pointer-events: none;
     opacity: 0;
-    /* Move from var(--startX, --startY) to 0,0 */
     animation: swarmToDoor 2.5s var(--delay) cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
 }
 
@@ -1304,9 +1281,7 @@ body.loading-body {
     }
 }
 
-/* ========================================= */
-/* RAINING SHINING PARTICLES (OPENED DOOR)   */
-/* ========================================= */
+/* Raining Shining Particles (Opened Door) */
 
 .rain-container {
     position: absolute;
@@ -1325,7 +1300,6 @@ body.loading-body {
     color: #FFF;
     font-size: 14px;
     opacity: 0;
-    /* Raining down animation */
     animation: rainDown 2s infinite linear;
     text-shadow: 0 0 10px #FFF, 0 0 20px #A013EC;
 }
@@ -1352,9 +1326,7 @@ body.loading-body {
     }
 }
 
-/* ========================================= */
-/* PIXEL-PERFECT LOGIN UI REDESIGN (ISOLATED)*/
-/* ========================================= */
+/* Login UI Re-design */
 
 body.auth-body {
     background-color: #1A0031;
@@ -1532,9 +1504,7 @@ body.auth-body {
     }
 }
 
-/* ========================================= */
-/* PIXEL-PERFECT GAME WELCOME PAGE REDESIGN  */
-/* ========================================= */
+/* Game Welcome Page Re-design */
 
 .welcome-bg-body {
     margin: 0;
@@ -1830,9 +1800,7 @@ body.auth-body {
     }
 }
 
-/* ========================================= */
-/* PIXEL-PERFECT MENU (PLAYER HOME) REDESIGN */
-/* ========================================= */
+/* Menu (Player Home) Re-design */
 
 .petals-container {
     position: absolute;
@@ -1854,7 +1822,6 @@ body.auth-body {
     background-size: contain;
     background-repeat: no-repeat;
     opacity: 0;
-    /* Adding a heavy pink/purple glow drop-shadow to make them "shiny" */
     filter: drop-shadow(0 0 8px rgba(213, 146, 234, 0.9)) brightness(1.2);
     animation: shiny-petal-fall linear infinite;
 }
@@ -2053,9 +2020,7 @@ body.auth-body {
     }
 }
 
-/* ========================================= */
-/* PIXEL-PERFECT DASHBOARD LOW-FI RECREATION */
-/* ========================================= */
+/* Dashboard Low-Fi Recreation */
 
 .dashboard-main-layout {
     flex: 1;
@@ -2210,7 +2175,6 @@ body.auth-body {
     height: 100%;
     overflow-y: auto;
     padding-right: 15px;
-    /* space for scrollbar layout mapping */
 }
 
 /* Customizing the scrollbar for the grid container so it perfectly fits wireframe */
@@ -2281,9 +2245,7 @@ body.auth-body {
     }
 }
 
-/* ========================================= */
-/* PIXEL-PERFECT PROFILE LOW-FI RECREATION   */
-/* ========================================= */
+/* Profile Low-Fi Recreation */
 
 .profile-main-layout {
     flex: 1;
@@ -2566,9 +2528,7 @@ body.auth-body {
     }
 }
 
-/* ========================================= */
-/* GLOBAL FLOATING ACTION BUTTONS (FAB)      */
-/* ========================================= */
+/* Global Floating Action Buttons (FAB) */
 .global-fab-container {
     position: fixed;
     bottom: 30px;
@@ -2635,9 +2595,7 @@ body.auth-body {
     }
 }
 
-/* ========================================= */
-/* GLOBAL COPYRIGHT FOOTER                   */
-/* ========================================= */
+/* Global Copyright Footer */
 .global-copyright {
     position: fixed;
     bottom: 12px;
