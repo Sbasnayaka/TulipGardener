@@ -12,7 +12,7 @@
 </head>
 
 <body class="auth-body">
-    <!-- Glowing Orbs Background -->
+    <!-- Background with glowing circles -->
     <div class="home-glow-orb top-left"></div>
     <div class="home-glow-orb bottom-right"></div>
     <div class="home-glow-orb center-left"></div>
@@ -47,7 +47,7 @@
 
                 <button type="submit" class="btn btn-primary auth-submit-btn" style="width: 100%;">Submit</button>
 
-                <!-- Navigation link between Login and Signup -->
+                <!-- Link to switch between Login and Signup -->
                 <div style="margin-top: 20px; text-align: center;">
                     <a href="#" id="auth-toggle-link"
                         style="color: #B39DCD; text-decoration: none; font-size: 13px; font-family: 'Poppins', sans-serif;">
@@ -60,12 +60,12 @@
         </div>
     </div>
 
-    <!-- Supabase CDN -->
+    <!-- Supabase library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Architecture: Service Layer -->
+    <!-- Services handle the data -->
     <script src="js/services/supabaseClient.js"></script>
     <script src="js/services/UserService.js"></script>
-    <!-- Architecture: Controller Layer -->
+    <!-- Controllers handle the UI -->
     <script src="js/controllers/AuthController.js"></script>
 
     <script>
@@ -75,23 +75,23 @@
         const toggleLink = document.getElementById('auth-toggle-link');
         const authCard = document.getElementById('auth-card');
 
-        // Set title and UI elements based on mode
+        // Change page title and fields for login or signup
         if (mode === 'signup') {
             authCard.classList.add('signup-mode');
             document.getElementById('auth-title').innerText = 'Sign Up';
             document.getElementById('username-group').style.display = 'flex';
             document.getElementById('confirm-password-group').style.display = 'flex';
 
-            // For signup, use the real field names for placeholders
+            // Set the hint text for signup
             document.getElementById('username').placeholder = 'Username';
             document.getElementById('password').placeholder = 'Password';
             document.getElementById('confirm-password').placeholder = 'Confirm Password';
 
-            // Set link to switch to login
+            // Let user switch to login
             toggleLink.innerText = 'Already have an account? Login';
             toggleLink.href = 'auth.html?mode=login';
 
-            // Make confirm password required for signup
+            // Must fill confirm password
             document.getElementById('confirm-password').setAttribute('required', 'true');
         } else {
             authCard.classList.remove('signup-mode');
@@ -99,19 +99,19 @@
             document.getElementById('username-group').style.display = 'flex';
             document.getElementById('confirm-password-group').style.display = 'none';
 
-            // For login, keep placeholder simple
+            // Set the hint text for login
             document.getElementById('username').placeholder = 'Username';
             document.getElementById('password').placeholder = 'Password';
 
-            // Set link to switch to signup
+            // Let user switch to signup
             toggleLink.innerText = "Don't have an account? Sign up";
             toggleLink.href = 'auth.html?mode=signup';
 
-            // Remove required attribute for login
+            // Don't need confirm password for login
             document.getElementById('confirm-password').removeAttribute('required');
         }
 
-        // Form submit
+        // Run when user click submit
         document.getElementById('auth-form').addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -125,7 +125,7 @@
             if (mode === 'signup') {
                 const confirmPassword = document.getElementById('confirm-password').value;
 
-                // Inline validation for password match as constrained
+                // Check if both passwords are same
                 if (password !== confirmPassword) {
                     errorMsg.innerText = "Passwords do not match.";
                     errorMsg.style.display = 'block';
@@ -143,7 +143,7 @@
             }
         });
     </script>
-    <!-- Global Floating Action Buttons -->
+    <!-- Buttons that float on screen -->
     <div class="global-fab-container">
         <a href="menu.html" class="fab-btn fab-play" title="Play Game">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
@@ -160,7 +160,7 @@
         </a>
     </div>
 
-    <!-- Global Copyright Footer -->
+    <!-- Footer with name and ID -->
     <div class="global-copyright">
         &copy; sanduni kaveesha basnayaka 2541893 game project
     </div>

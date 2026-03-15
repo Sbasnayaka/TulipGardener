@@ -11,16 +11,16 @@
 </head>
 
 <body class="welcome-bg-body">
-    <!-- Background Video Wrapper -->
+    <!-- Video in background -->
     <div class="video-container">
-        <!-- Add the exact requested video path -->
+        <!-- Use the video file -->
         <video autoplay loop muted playsinline id="bg-video">
             <source src="assets/background-%20V01.MOV" type="video/mp4">
         </video>
         <div class="video-overlay"></div>
     </div>
 
-    <!-- Top Navigation -->
+    <!-- Top menu bar -->
     <header class="welcome-top-nav">
         <div class="nav-brand">
             <div class="brand-hexagon">
@@ -77,7 +77,7 @@
         </div>
     </header>
 
-    <!-- Main Content -->
+    <!-- Page content -->
     <main class="welcome-main-layout">
         <div class="welcome-glass-card">
 
@@ -116,12 +116,12 @@
         if (avatar && avatar !== 'null' && avatar !== 'undefined') {
             document.getElementById('user-avatar').src = decodeURIComponent(avatar);
         } else {
-            // Fallback avatar background color if image fails or missing
+            // Show a color if no picture
             document.getElementById('user-avatar').style.display = 'none';
             document.querySelector('.welcome-avatar-wrapper').style.background = '#A013EC';
         }
     </script>
-    <!-- Global Floating Action Buttons -->
+    <!-- Common buttons on side -->
     <div class="global-fab-container">
         <a href="menu.html" class="fab-btn fab-play" title="Play Game">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
@@ -138,7 +138,7 @@
         </a>
     </div>
 
-    <!-- Global Copyright Footer -->
+    <!-- Footer with name and ID -->
     <div class="global-copyright">
         &copy; sanduni kaveesha basnayaka 2541893 game project
     </div>

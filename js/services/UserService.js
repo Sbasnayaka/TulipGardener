@@ -1,15 +1,15 @@
-//SINGLE RESPONSIBILITY: All user-related operations (Auth + Profile Data).
-//HIGH COHESION: Everything about the "User" concept lives here.
-//LOW COUPLING: This service only depends on `supabaseClient`. 
-//Controllers call these methods without knowing Supabase internals.
+// This file handle the user data and login/signup
+// Each file do one thing (Cohesion)
+// This file only use supabaseClient (Low Coupling)
+// Controllers call these functions to get player data
 
 
 class UserService {
 
-    //Sign up a new user with email and password.
-    //Also creates a profile row in the `profiles` table.
+    // Create a new user account
+    // It also save a profile in the table
     static async signUp(username, password) {
-        // Check for duplicate username first to prevent dangling auth users
+        // We check if username already exist
         const { data: existingUser, error: checkError } = await supabaseClient
             .from('profiles')
             .select('username')
@@ -17,7 +17,7 @@ class UserService {
             .maybeSingle();
 
         if (checkError && checkError.code !== 'PGRST116') {
-            // PGRST116 means 0 rows returned, which is fine here. 
+            // PGRST116 means user not found, that is ok
             // If it's another error, throw it.
             throw checkError;
         }
@@ -28,7 +28,7 @@ class UserService {
 
         const dummyEmail = `${username}@tulipgardener.local`;
 
-        // Create auth user
+        // Create the user in Supabase Auth
         const { data, error } = await supabaseClient.auth.signUp({
             email: dummyEmail,
             password: password,
@@ -36,10 +36,10 @@ class UserService {
 
         if (error) throw error;
 
-        // Generate DiceBear avatar
+        // Get a nice avatar for the player
         const avatarUrl = `https://api.dicebear.com/7.x/pixel-art/svg?seed=${encodeURIComponent(username)}`;
 
-        // Create profile in `profiles` table
+        // Save the player profile in database
         const { error: profileError } = await supabaseClient
             .from('profiles')
             .insert({
@@ -59,7 +59,7 @@ class UserService {
         };
     }
 
-    //Sign in an existing user.
+    // Login an existing user
     static async signIn(username, password) {
         const dummyEmail = `${username}@tulipgardener.local`;
         const { data, error } = await supabaseClient.auth.signInWithPassword({
@@ -76,7 +76,7 @@ class UserService {
         return data;
     }
 
-    //Get the currently logged-in user's profile data.
+    // Get the profile of the current player
     static async getProfile() {
         const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
         if (sessionError || !session) return null;
@@ -93,14 +93,14 @@ class UserService {
         return data;
     }
 
-    //Update the user's score. Increments by 1 and updates best_record if needed (fastest speed in seconds).
+    // Update the player score and record
     static async incrementScore(timeTaken) {
         const profile = await this.getProfile();
         if (!profile) throw new Error('No profile found');
 
         const newScore = profile.score + 1;
 
-        // Update best_record to store the fastest time resolving a puzzle
+        // Save the best time for solving puzzle
         let newBest = profile.best_record;
         if (timeTaken !== undefined) {
             // Uninitialized or strict improvement
@@ -118,13 +118,13 @@ class UserService {
         return { score: newScore, bestRecord: newBest };
     }
 
-    //Sign out the current user.
+    // Logout the player
     static async signOut() {
         const { error } = await supabaseClient.auth.signOut();
         if (error) throw error;
     }
 
-    //Check if a user is currently logged in.
+    // Check if player is logged in now
     static async getCurrentUser() {
         const { data: { session }, error } = await supabaseClient.auth.getSession();
         if (error || !session) return null;

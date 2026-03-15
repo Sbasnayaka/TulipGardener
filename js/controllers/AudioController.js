@@ -1,33 +1,33 @@
-//Handles global background music across the MPA (Multi-Page Application).
-//Uses sessionStorage to persist the playback time between page loads,
-//creating the illusion of a single continuous track.
+// This controller manage the music for the whole app
+// It remember the music time when you change the page
+// So the music keep playing from same place
 
 class AudioController {
     constructor() {
         this.audio = new Audio('assets/background song.mp3');
         this.audio.loop = true;
-        // Load background volume from settings if available
+        // Load the volume from settings
         const savedVolume = localStorage.getItem('bgVolume');
-        this.audio.volume = savedVolume !== null ? parseFloat(savedVolume) : 0.3; // Default 30% volume
+        this.audio.volume = savedVolume !== null ? parseFloat(savedVolume) : 0.3; // Default is 30%
 
         
-        // Attempt to load previous playback time
+        // Try to go back to the same music time
         const savedTime = sessionStorage.getItem('bgMusicTime');
         if (savedTime) {
             this.audio.currentTime = parseFloat(savedTime);
         }
 
-        // Try playing immediately
-        // Modern browsers require a user interaction first.
-        // If it fails, we fall back to waiting for a click.
+        // Try to play music now
+        // Browser need a user click first sometimes
+        // If it fail, we wait for a click
         this.playAudio();
 
-        // Save time right before the user navigates away
+        // Save the music time before page close
         window.addEventListener('beforeunload', () => {
             sessionStorage.setItem('bgMusicTime', this.audio.currentTime);
         });
         
-        // If playback was blocked initially, try to play on the first interaction
+        // If music not start, try play when user click anywhere
         document.body.addEventListener('click', () => {
             if (this.audio.paused) {
                 this.playAudio();

@@ -34,7 +34,7 @@
             box-shadow: 0 12px 30px rgba(179, 71, 255, 0.4);
         }
 
-        /* Loading Overlay */
+        /* Screen that shows while loading */
         #dash-loading-overlay {
             position: fixed;
             inset: 0;
@@ -80,16 +80,16 @@
 </head>
 
 <body class="welcome-bg-body">
-    <!-- Loading Overlay -->
+    <!-- Loading screen -->
     <div id="dash-loading-overlay">
         <div class="dash-spinner"></div>
         <div class="dash-loading-text">Growing your garden...</div>
     </div>
 
-    <!-- Falling Petals Background (from Menu) -->
+    <!-- Falling petals in background -->
     <div class="petals-container"></div>
 
-    <!-- Top Navigation  -->
+    <!-- Top menu bar -->
     <header class="welcome-top-nav">
         <div class="nav-brand">
             <div class="brand-hexagon">
@@ -128,7 +128,7 @@
         </div>
 
         <div class="nav-actions">
-            <!-- Nav Actions Empty / Kept for spacing structure if needed, or mirrored from global layout -->
+            /* Extra buttons like settings */
             <button class="icon-btn" onclick="window.location.href='settings.html'" title="Settings">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -149,31 +149,31 @@
         </div>
     </header>
 
-    <!-- Main Content -->
+    <!-- The main parts of dashboard -->
     <main class="dashboard-main-layout">
         <div class="dashboard-glass-card">
 
-            <!-- Column 1: Video & Actions -->
+            <!-- Left part: Video and grow button -->
             <div class="dash-col dash-col-left">
                 <div class="oval-video-mask">
                     <video autoplay loop muted playsinline>
                         <source src="assets/background%20v02.MP4" type="video/mp4">
                     </video>
                 </div>
-                <!-- Binding to menu.html safely -->
+                <!-- Go to game page -->
                 <a href="menu.html" class="welcome-go-btn grow-btn">Grow a new Tulip</a>
             </div>
 
-            <!-- Divider Line -->
+            <!-- Line in the middle -->
             <div class="dash-divider"></div>
 
-            <!-- Column 2: Status -->
+            <!-- Center part: Player stats -->
             <div class="dash-col dash-col-center" style="gap: 20px;">
                 <h3 class="dash-status-title"
                     style="color: #fff; font-size: 1.5rem; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700;">
                     Gardener Log</h3>
 
-                <!-- Beautiful Stat Card 1 -->
+                <!-- Box for current level -->
                 <div
                     style="background: rgba(20, 5, 30, 0.4); border: 1px solid rgba(179, 71, 255, 0.2); border-radius: 20px; padding: 25px; width: 100%; position: relative; overflow: hidden; backdrop-filter: blur(24px); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
                     <div
@@ -198,7 +198,7 @@
                     </svg>
                 </div>
 
-                <!-- Beautiful Stat Card 2 -->
+                <!-- Box for total score -->
                 <div
                     style="background: rgba(20, 5, 30, 0.4); border: 1px solid rgba(160, 19, 236, 0.2); border-radius: 20px; padding: 25px; width: 100%; position: relative; overflow: hidden; backdrop-filter: blur(24px); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
                     <div
@@ -224,11 +224,11 @@
                 </div>
             </div>
 
-            <!-- Column 3: Garden Grid -->
+            <!-- Right part: The tulip garden -->
             <div class="dash-col dash-col-right">
                 <div class="garden-viewport">
                     <div class="garden-grid-scrollable" id="garden">
-                        <!-- Dynamic content filled by JS -->
+                        <!-- JS will put tulips here -->
                     </div>
                 </div>
             </div>
@@ -236,14 +236,14 @@
         </div>
     </main>
 
-    <!-- Supabase CDN -->
+    <!-- Connect to database -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Architecture -->
+    <!-- Logic files -->
     <script src="js/services/supabaseClient.js"></script>
     <script src="js/services/UserService.js"></script>
     <script src="js/controllers/AuthController.js"></script>
 
-    <!-- Background Petal Rain (Shared logic from menu.html) -->
+    <!-- Make the petals fall -->
     <script>
         function createShinyPetals() {
             const container = document.querySelector('.petals-container');
@@ -273,7 +273,7 @@
         }
         createShinyPetals();
 
-        // Core Dashboard Logic Intact
+        // Get data to show on dashboard
         async function loadDashboard() {
             const authed = await AuthController.requireAuth();
             if (!authed) return;
@@ -288,24 +288,24 @@
                 else if (profile.score >= 3) level = 'Intermediate';
                 document.getElementById('level-badge').innerText = level;
 
-                // Render garden
+                // Show the tulips in garden
                 renderGarden(profile.score);
             } catch (e) {
                 console.error('Dashboard load error:', e);
             } finally {
-                // Always hide the overlay once done, even on error
+                // Always remove the loading screen
                 const overlay = document.getElementById('dash-loading-overlay');
                 overlay.classList.add('hidden');
                 setTimeout(() => overlay.style.display = 'none', 500); // Remove after fade
             }
         }
 
-        // Updated Render Garden overriding simple emojis to use the PNG inside wireframe circles
+        // This function put the tulips into the circles
         function renderGarden(score) {
             const grid = document.getElementById('garden');
             grid.innerHTML = '';
 
-            // Generate minimum 9 slots to respect grid structure, but allow infinite scrolling
+            // Show at least 9 circles
             const totalSlots = Math.max(9, score);
 
             for (let i = 0; i < totalSlots; i++) {
@@ -313,11 +313,11 @@
                 slot.className = 'garden-wire-slot';
 
                 if (i < score) {
-                    // Randomize from a set of beautiful premium glowing colors
+                    // Pick a random nice color for tulip
                     const glowColors = ['#FF3366', '#B347FF', '#FFB347', '#47B3FF', '#A013EC', '#FF47B3'];
                     const randoGlow = glowColors[Math.floor(Math.random() * glowColors.length)];
 
-                    // Direct inject SVG with dynamic fill and the identical animation class
+                    // Draw the tulip using SVG
                     slot.innerHTML = `
                         <svg class="grown-tulip-img" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 60%; height: 60%; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));">
                             <!-- Beautiful glowing bloom -->
@@ -336,7 +336,7 @@
 
         loadDashboard();
     </script>
-    <!-- Global Floating Action Buttons -->
+    <!-- Floating buttons and footer -->
     <div class="global-fab-container">
         <a href="menu.html" class="fab-btn fab-play" title="Play Game">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
@@ -353,7 +353,7 @@
         </a>
     </div>
 
-    <!-- Global Copyright Footer -->
+    <!-- Footer with name and ID -->
     <div class="global-copyright">
         &copy; sanduni kaveesha basnayaka 2541893 game project
     </div>

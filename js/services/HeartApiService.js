@@ -1,15 +1,15 @@
-//SINGLE RESPONSIBILITY: Fetch puzzles from the Heart API.
-//HIGH COHESION: This module ONLY knows about the Heart API.
-//LOW COUPLING: If the API changes, we ONLY change this file.
-//The GameController doesn't know the API URL or response format.
+// This file get the puzzles from the Heart API
+// Each file do one thing (Cohesion)
+// This file only know about the API (Low Coupling)
+// Game Controller dont need to know the API URL
 
 
 class HeartApiService {
 
     static API_URL = 'https://marcconrad.com/uob/heart/api.php?out=json';
 
-    //Fetches a puzzle from the Heart API.
-    //Returns { question: 'image_url', solution: number }
+    // This function fetch a puzzle from the API
+    // It return the image and the answer
     static async getPuzzle() {
         try {
             const response = await fetch(this.API_URL);
@@ -18,7 +18,7 @@ class HeartApiService {
             }
             const data = await response.json();
 
-            // The API returns { question: "url_to_image", solution: number }
+            // API give us image url and answer
             return {
                 imageUrl: data.question,
                 solution: data.solution

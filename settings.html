@@ -14,7 +14,7 @@
 <body class="welcome-bg-body">
     <div class="petals-container"></div>
 
-    <!-- Top Navigation  -->
+    <!-- Top menu bar -->
     <header class="welcome-top-nav">
         <div class="nav-brand">
             <div class="brand-hexagon">
@@ -50,7 +50,7 @@
         </div>
 
         <div class="nav-actions">
-            <!-- Active settings -->
+            <!-- Active button for settings -->
             <button class="icon-btn active" onclick="window.location.href='settings.html'" title="Settings"
                 style="color: #A013EC;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -102,7 +102,7 @@
         </div>
     </main>
 
-    <!-- Supabase CDN -->
+    <!-- Connect to database -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/services/supabaseClient.js"></script>
     <script src="js/services/UserService.js"></script>
@@ -111,18 +111,18 @@
     <script>
         AuthController.requireAuth();
 
-        // Volume System Engine Setup
+        // Logic to change music volume
         document.addEventListener('DOMContentLoaded', () => {
             const volSlider = document.getElementById('music-volume');
             if (volSlider && window.globalAudio) {
-                // Initialize visual slider track to match loaded AudioController state
+                // Set slider to current music volume
                 volSlider.value = Math.round(globalAudio.audio.volume * 100);
 
-                // Listen for movement and seamlessly adjust music logic
+                // Change volume when slider move
                 volSlider.addEventListener('input', (e) => {
                     const mappedVol = e.target.value / 100;
                     globalAudio.audio.volume = mappedVol;
-                    localStorage.setItem('bgVolume', mappedVol); // Persist across visits endlessly
+                    localStorage.setItem('bgVolume', mappedVol); // Save for next time
                 });
             }
         });
@@ -166,7 +166,7 @@
         </a>
     </div>
 
-    <!-- Global Copyright Footer -->
+    <!-- Footer with name and ID -->
     <div class="global-copyright">
         &copy; sanduni kaveesha basnayaka 2541893 game project
     </div>

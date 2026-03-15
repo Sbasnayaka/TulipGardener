@@ -1,17 +1,17 @@
-//SINGLE RESPONSIBILITY: Handle authentication UI interactions.
-//LOW COUPLING: This controller talks to UserService methods.
-//Does NOT know about Supabase directly.
-//Does NOT contain any database logic.
+// This controller handle the Login and Sign Up UI
+// It talk to the UserService for the data
+// It dont know about Supabase directly (Low Coupling)
+// OnlyUserService talk to the database
 
 class AuthController {
 
-    //Handle the Sign Up form submission.
-    //Called from auth.html's form onsubmit.
+    // This function handle the Sign Up button
+    // It is called from the auth form
     static async handleSignUp(username, password) {
         try {
             const result = await UserService.signUp(username, password);
 
-            // Redirect to welcome page with user info
+            // Go to welcome page if signup is good
             window.location.href = `welcome.html?username=${encodeURIComponent(username)}&avatar=${encodeURIComponent(result.avatarUrl)}`;
             return { success: true };
         } catch (error) {
@@ -19,13 +19,13 @@ class AuthController {
         }
     }
 
-    //Handle the Login form submission.
-    //Called from auth.html's form onsubmit.
+    // This handle the Login button
+    // It is called from the login form
     static async handleLogin(username, password) {
         try {
             await UserService.signIn(username, password);
 
-            // Get profile to redirect with username
+            // Get player profile to show his name
             const profile = await UserService.getProfile();
 
             window.location.href = `welcome.html?username=${encodeURIComponent(profile.username)}&avatar=${encodeURIComponent(profile.avatar_url)}`;
@@ -35,7 +35,7 @@ class AuthController {
         }
     }
 
-    //Handle logout.
+    // This function handle logout
     static async handleLogout() {
         try {
             await UserService.signOut();
@@ -45,7 +45,7 @@ class AuthController {
         }
     }
 
-    //Check if user is logged in, redirect to index if not.
+    // Check if player is logged in, if not go to index page
     static async requireAuth() {
         const user = await UserService.getCurrentUser();
         if (!user) {
@@ -55,11 +55,11 @@ class AuthController {
         return true;
     }
 
-    //Listen for auth changes (like token refreshes or actual sign outs) 
-    //to manage session state globally without disruptive redirects on network blips.
+    // This listener check if user log out in another tab
+    // Or if the session end
     static initAuthListener() {
         supabaseClient.auth.onAuthStateChange((event, session) => {
-            // Only redirect if explicitly signed out or user deleted
+            // If user sign out, go back to home page
             if (event === 'SIGNED_OUT' || event === 'USER_DELETED') {
                 const protectedPages = ['welcome.html', 'dashboard.html', 'profile.html', 'game.html'];
                 const currentPage = window.location.pathname.split('/').pop() || '';
@@ -73,5 +73,5 @@ class AuthController {
     }
 }
 
-// Auto-initialize the listener when the controller loads
+// Start the listener when the page load
 AuthController.initAuthListener();

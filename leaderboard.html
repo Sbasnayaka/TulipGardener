@@ -10,7 +10,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <style>
-        /* Base page styling overrides for new leaderboard aesthetic */
+        /* Styles for leaderboard page */
         body {
             margin: 0;
             padding: 0;
@@ -20,13 +20,13 @@
             color: #fff;
         }
 
-        /* Override global welcome-bg-body which has overflow:hidden */
+        /* Allow scrolling on this page */
         .welcome-bg-body {
             overflow-y: auto !important;
             min-height: 100vh;
         }
 
-        /* Pin the background video so it doesn't scroll away with the page */
+        /* Fix the background video so it stay behind */
         .video-container {
             position: fixed !important;
             top: 0;
@@ -365,7 +365,7 @@
             padding-right: 5px;
         }
 
-        /* Custom scrollbar for leaderboard list */
+        /* Scrollbar for the list */
         #leaderboard-container::-webkit-scrollbar {
             width: 8px;
         }
@@ -394,7 +394,7 @@
         <div class="video-overlay" style="background: rgba(15, 0, 25, 0.4);"></div>
     </div>
 
-    <!-- Top Navigation -->
+    <!-- Top menu bar -->
     <header class="welcome-top-nav"
         style="position: relative; z-index: 20; background: rgba(0,0,0,0.1); border-bottom: 1px solid rgba(255,255,255,0.05);">
         <div class="nav-brand">
@@ -451,7 +451,7 @@
                     <line x1="12" y1="17" x2="12.01" y2="17"></line>
                 </svg>
             </button>
-            <!-- User avatar small placeholder matches the design image -->
+            <!-- Small picture of player -->
             <button class="icon-btn" style="padding:0; border:none; background:none;">
                 <img src="assets/profile-default.png" id="header-user-avatar"
                     style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; background: #666; display:none;">
@@ -459,7 +459,7 @@
         </div>
     </header>
 
-    <!-- Header Text -->
+    <!-- Title text -->
     <div class="lb-header-container">
         <div class="lb-subheading">THE MAGICAL GARDEN</div>
         <h1 class="lb-heading">Global Leaderboard</h1>
@@ -470,7 +470,7 @@
         </div>
     </div>
 
-    <!-- Main Leaderboard Table -->
+    <!-- The big leaderboard table -->
     <div class="lb-main-card">
         <div class="lb-table-header">
             <div class="lb-rank-col" style="justify-content: flex-start; padding-left: 10px;">RANK</div>
@@ -479,14 +479,14 @@
             <div class="lb-status-col">STATUS</div>
         </div>
         <div id="leaderboard-container">
-            <!-- Populated via JS -->
+            <!-- Put players here with JS -->
             <p style="text-align:center; padding: 20px; color:#ccc;">Fetching top profiles from the frontier...</p>
         </div>
     </div>
 
-    <!-- Bottom Stats -->
+    <!-- Stats at bottom -->
     <div class="lb-stats-container">
-        <!-- Card 1 -->
+        <!-- My rank box -->
         <div class="lb-stat-card">
             <div class="lb-stat-title">YOUR GLOBAL RANK</div>
             <h2 class="lb-stat-value" id="my-rank">#--</h2>
@@ -506,7 +506,7 @@
             </svg>
         </div>
 
-        <!-- Card 2 -->
+        <!-- My score box -->
         <div class="lb-stat-card">
             <div class="lb-stat-title">TOTAL TULIPS</div>
             <h2 class="lb-stat-value" id="my-score">--</h2>
@@ -530,7 +530,7 @@
         <a href="menu.html" class="lb-action-btn">Lets grow more tulipssss</a>
     </div>
 
-    <!-- Supabase CDN -->
+    <!-- Connect to database -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/services/supabaseClient.js"></script>
     <script src="js/services/UserService.js"></script>
@@ -541,24 +541,25 @@
             return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
+        // Show the leaderboard data
         async function loadLeaderboard() {
             const authed = await AuthController.requireAuth();
             if (!authed) return;
 
             try {
-                // Fetch Current User
+                // Get my details
                 const profile = await UserService.getProfile();
                 const userScore = profile.score || 0;
                 document.getElementById('my-score').innerText = formatNumber(userScore);
 
-                // Show avatar in top right header corner if it exists
+                // Show player picture in top bar
                 if (profile.avatar_url && profile.avatar_url !== 'null' && profile.avatar_url !== 'undefined') {
                     const headerAvatar = document.getElementById('header-user-avatar');
                     headerAvatar.src = decodeURIComponent(profile.avatar_url);
                     headerAvatar.style.display = 'block';
                 }
 
-                // Compute rank by checking how many players hold a higher score
+                // Find my rank position
                 let myRank = "--";
                 const { count, error: rankError } = await supabaseClient
                     .from('profiles')
@@ -582,7 +583,7 @@
 
                 // Removed threshold logic
 
-                // Fetch top 50 users for leaderboard
+                // Get top 50 players
                 const { data, error } = await supabaseClient
                     .from('profiles')
                     .select('username, score, avatar_url')
@@ -649,7 +650,7 @@
         loadLeaderboard();
     </script>
 
-    <!-- Global Floating Action Buttons -->
+    <!-- Common buttons on side -->
     <div class="global-fab-container">
         <a href="menu.html" class="fab-btn fab-play" title="Play Game">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
@@ -666,7 +667,7 @@
         </a>
     </div>
 
-    <!-- Global Copyright Footer -->
+    <!-- Footer with name and ID -->
     <div class="global-copyright">
         &copy; sanduni kaveesha basnayaka 2541893 game project
     </div>

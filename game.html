@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" href="assets/logo.png">
     <link rel="stylesheet" href="css/style.css">
     <style>
-        /* Specific Game Page Styling Constraints */
+        /* Styles for game page */
         body {
             margin: 0;
             padding: 0;
@@ -17,7 +17,7 @@
             color: #fff;
         }
 
-        /* Loading Blur State */
+        /* Blur effect for loading */
         .puzzle-blur {
             filter: blur(20px);
             transition: filter 1s ease-in-out;
@@ -27,14 +27,14 @@
             filter: blur(0);
         }
 
-        /* Submit Fade Out */
+        /* Make submit button fade away */
         .btn-fade {
             opacity: 0;
             pointer-events: none;
             transition: opacity 1.5s ease;
         }
 
-        /* Times Up Blur Overlay */
+        /* Screen for Time Is Up */
         #timesup-overlay {
             position: fixed;
             inset: 0;
@@ -103,7 +103,7 @@
             color: #B347FF;
         }
 
-        /* Incorrect Answer Blur Overlay */
+        /* Screen for Wrong Answer */
         #incorrect-overlay {
             position: fixed;
             inset: 0;
@@ -165,7 +165,7 @@
         }
 
 
-        /* Back Button Override for Game Page*/
+        /* Back button to go home */
         .back-btn {
             position: fixed;
             top: 20px;
@@ -230,29 +230,29 @@
 </head>
 
 <body>
-    <!-- Back Button -->
+    <!-- Button to go back -->
     <a href="dashboard.html" class="back-btn" title="Back to Dashboard">
         <img src="assets/back.png" alt="Back" style="width: 20px; height: 20px; object-fit: contain;">
     </a>
 
-    <!-- Background Image with 10% opacity overall -->
+    <!-- Background image -->
     <div class="video-container"
         style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; overflow:hidden;">
         <!-- background-img3.png as requested with low opacity -->
         <img src="assets/background-img3.png" style="object-fit:cover; width:100%; height:100%; opacity: 0.9;"
             alt="Background">
-        <!-- 10% dark overlay -->
+        <!-- Dark cover for background -->
         <div class="video-overlay"
             style="position:absolute; top:0; left:0; width:100%; height:100%; background: rgba(0, 0, 0, 0.9);"></div>
     </div>
 
-    <!-- Raining Petals Container matching menu.html -->
+    <!-- Falling petals effect -->
     <div class="petals-container"
         style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; overflow:hidden;">
     </div>
 
     <script>
-        // 100+ Shiny Petal Rain Simulation matching menu.html
+        // Logic to make petals fall
         function createShinyPetals() {
             const container = document.querySelector('.petals-container');
             const petalCount = 120; // Generating over 100 petals
@@ -289,14 +289,14 @@
         createShinyPetals();
     </script>
 
-    <!-- Incorrect Answer Overlay -->
+    <!-- Screen for wrong answer -->
     <div id="incorrect-overlay">
         <div class="incorrect-icon">❌</div>
         <div class="incorrect-title">INCORRECT!</div>
         <div class="incorrect-sub">TRY AGAIN...</div>
     </div>
 
-    <!-- Time's Up Overlay -->
+    <!-- Screen for time up -->
     <div id="timesup-overlay">
         <div class="timesup-icon">⏰</div>
         <div class="timesup-title">TIME'S UP!</div>
@@ -304,7 +304,7 @@
         <div class="timesup-countdown" id="timesup-counter">3</div>
     </div>
 
-    <!-- Celebration Overlay -->
+    <!-- Screen for winning -->
     <div id="celebration" class="celebration-overlay">
         <div class="emoji-watering">🚿</div>
         <div class="emoji-flower">🌷</div>
@@ -320,7 +320,7 @@
         </div>
     </div>
 
-    <!-- Game UI -->
+    <!-- The game page parts -->
     <div class="container wide" style="z-index: 10; position:relative;">
         <div class="game-card">
             <!-- Header -->
@@ -342,9 +342,9 @@
                     <button id="submit-btn" class="btn btn-primary" style="width: 100%;">Submit</button>
                 </div>
 
-                <!-- Right: Image -->
+                <!-- Right part: Puzzle image -->
                 <div class="image-display" style="position:relative;">
-                    <!-- Added puzzle-blur class for loading -->
+                    <!-- Puzzle image starts blurry -->
                     <img id="puzzle-image" class="puzzle-blur" src="" alt="Loading puzzle...">
                     <div id="loading-overlay"
                         style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background: rgba(0,0,0,0.5); z-index:2; border-radius:15px; transition: opacity 0.5s;">
@@ -357,27 +357,27 @@
 
     <!-- Supabase CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Architecture: Service Layer -->
+    <!-- Controllers and Services -->
     <script src="js/services/supabaseClient.js"></script>
     <script src="js/services/UserService.js"></script>
     <script src="js/services/HeartApiService.js"></script>
-    <!-- Architecture: Controller Layer -->
+    <!-- UI logic -->
     <script src="js/controllers/AuthController.js"></script>
     <script src="js/controllers/GameController.js"></script>
 
     <script>
-        // Get mode from URL
+        // Get game level from URL
         const urlParams = new URLSearchParams(window.location.search);
         const mode = urlParams.get('mode') || 'beginner';
 
-        // Update mode label
+        // Show level name on screen
         document.getElementById('game-mode-label').innerText =
             mode.charAt(0).toUpperCase() + mode.slice(1) + ' Mode';
 
-        // Create controller instance and initialize
+        // Create the game logic object
         const gameCtrl = new GameController(mode);
 
-        // Auth guard then init game
+        // Check if user is logged in then start
         (async () => {
             const authed = await AuthController.requireAuth();
             if (!authed) return;
@@ -385,13 +385,13 @@
             document.getElementById('loading-text').style.display = 'none';
         })();
 
-        // Submit button
+        // Run when submit button is clicked
         document.getElementById('submit-btn').addEventListener('click', () => {
             const answer = document.getElementById('answer-input').value;
             gameCtrl.checkAnswer(answer);
         });
 
-        // Also allow Enter key
+        // Also run when Enter key is pressed
         document.getElementById('answer-input').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 const answer = document.getElementById('answer-input').value;
@@ -399,7 +399,7 @@
             }
         });
     </script>
-    <!-- Global Floating Action Buttons -->
+    <!-- Extra buttons and footer -->
     <div class="global-fab-container">
         <a href="menu.html" class="fab-btn fab-play" title="Play Game">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">

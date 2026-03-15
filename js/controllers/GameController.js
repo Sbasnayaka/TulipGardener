@@ -1,7 +1,7 @@
-//SINGLE RESPONSIBILITY: Manage the game loop, timer, and scoring.
-//LOW COUPLING: Uses HeartApiService for puzzles, UserService for scores.
-//Does NOT directly access Supabase or the Heart API URL.
-//HIGH COHESION: All game-related logic (timer, answer checking, celebration) is here.
+// This controller manage the game, timer and score
+// It use Heart API for puzzles and UserService for score
+// It does not use Supabase directly
+// Everything about game happen here (Cohesion)
 
 class GameController {
 
@@ -13,9 +13,9 @@ class GameController {
         this.overlayActive = false; 
     }
 
-    //Initialize the game: fetch puzzle and start timer.
+    // Start the game, get puzzle and start clock
     async init() {
-        // Set timer based on mode
+        // Set seconds for different modes
         if (this.mode === 'intermediate') {
             this.timeLeft = 5;
         } else if (this.mode === 'pro') {
@@ -30,7 +30,7 @@ class GameController {
         // Track start time
         this.startTime = Date.now();
 
-        // Update timer display immediately upon load
+        // Update clock on screen
         this.updateTimerDisplay();
 
         // Start timer if not beginner
@@ -39,13 +39,13 @@ class GameController {
         }
     }
 
-    //Fetch a puzzle from the HeartApiService.
+    // Get a puzzle from the service
     async loadPuzzle() {
         try {
             const puzzle = await HeartApiService.getPuzzle();
             this.currentSolution = puzzle.solution;
 
-            // Update the UI
+            // Show the puzzle image in UI
             const imgEl = document.getElementById('puzzle-image');
             imgEl.onload = () => {
                 imgEl.classList.remove('puzzle-blur');
@@ -62,7 +62,7 @@ class GameController {
         }
     }
 
-    //Start the countdown timer.
+    // Start the game clock
     startTimer() {
         this.updateTimerDisplay();
         this.timerInterval = setInterval(() => {
@@ -75,9 +75,9 @@ class GameController {
         }, 1000);
     }
 
-    //Show the "Time's Up!" blur overlay and countdown before reload.
+    // Show the "Time's Up" blur screen
     showTimesUp() {
-        // If incorrect overlay is already showing, just reload silently
+        // If incorrect screen is showing, just refresh the page
         if (this.overlayActive) {
             location.reload();
             return;
@@ -96,12 +96,12 @@ class GameController {
                 }
             }, 1000);
         } else {
-            // Fallback if overlay doesn't exist
+            // Refresh if no screen found
             location.reload();
         }
     }
 
-    //Update the timer text on screen.
+    // Update the clock text on the page
     updateTimerDisplay() {
         const timerEl = document.getElementById('timer-display');
         if (this.mode === 'beginner') {
@@ -111,7 +111,7 @@ class GameController {
         }
     }
 
-    //Check the user's answer against the solution.
+    // Check if the player's answer is correct
     async checkAnswer(userAnswer) {
         if (userAnswer === null || userAnswer === '') return;
 
@@ -128,10 +128,10 @@ class GameController {
             // Stop timer
             if (this.timerInterval) clearInterval(this.timerInterval);
 
-            // Calculate time taken
+            // How long the player took to solve
             const timeTaken = Math.max(1, Math.floor((Date.now() - this.startTime) / 1000));
 
-            // Update score in Supabase via UserService
+            // Save the score in database
             try {
                 const result = await UserService.incrementScore(timeTaken);
                 this.showCelebration(result.score);
@@ -146,14 +146,14 @@ class GameController {
         }
     }
 
-    //Show the "Incorrect!" blur overlay briefly and then fade it out.
+    // Show "Incorrect" screen briefly
     showIncorrect() {
         const overlay = document.getElementById('incorrect-overlay');
         if (!overlay) return;
         this.overlayActive = true; 
         overlay.style.display = 'flex';
         overlay.style.opacity = '1';
-        // Auto-dismiss after 1.8 seconds with a fade
+        // Hide after 1.8 seconds
         setTimeout(() => {
             overlay.style.transition = 'opacity 0.5s ease';
             overlay.style.opacity = '0';
@@ -166,14 +166,14 @@ class GameController {
         }, 1800);
     }
 
-    //Show the celebration overlay animation.
+    // Show the celebration screen and raining petals
     showCelebration(newScore) {
         const overlay = document.getElementById('celebration');
         const scoreEl = document.getElementById('celebration-score');
         if (scoreEl) scoreEl.innerText = newScore;
         overlay.classList.add('active');
 
-        // Auto redirect after 4 seconds
+        // Go to dashboard after 4 seconds
         setTimeout(() => {
             window.location.href = 'dashboard.html';
         }, 4000);

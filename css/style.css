@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 :root {
-    /* Color Palette */
+    /* Colors for the app */
     --wisteria: #C3ACEA;
     --amethyst: #A866BE;
     --mardi-gras: #801F82;
@@ -32,7 +32,7 @@ body {
     background-image: radial-gradient(circle at 50% 50%, #2a0a3d 0%, var(--bg-color) 70%);
 }
 
-/*  Container  */
+/* Main box sizing */
 .container {
     width: 100%;
     max-width: 480px;
@@ -48,7 +48,7 @@ body {
     max-width: 900px;
 }
 
-/*  Card  */
+/* White card style */
 .card {
     background: var(--card-bg);
     color: var(--card-text);
@@ -61,7 +61,7 @@ body {
     animation: fadeIn 0.6s ease-out;
 }
 
-/*  Buttons  */
+/* Click items */
 .btn {
     background: transparent;
     border: 2px solid #222;
@@ -94,7 +94,7 @@ body {
     border-color: var(--mardi-gras);
 }
 
-/*  Typography  */
+/* Text sizes */
 h1 {
     font-size: 1.8rem;
     margin-bottom: 20px;
@@ -106,7 +106,7 @@ h2 {
     margin-bottom: 15px;
 }
 
-/* ── Form ── */
+/* Form styles */
 .form-group {
     margin-bottom: 18px;
     text-align: left;
@@ -136,7 +136,7 @@ h2 {
     box-shadow: 0 0 0 3px rgba(168, 102, 190, 0.2);
 }
 
-/*  Nav Pill  */
+/* Menu bar styles */
 .nav-pill {
     display: flex;
     border: 3px solid #222;
@@ -167,7 +167,7 @@ h2 {
     background: #f0f0f0;
 }
 
-/*  Avatar  */
+/* Player picture */
 .avatar-circle {
     width: 130px;
     height: 130px;
@@ -184,7 +184,7 @@ h2 {
     object-fit: cover;
 }
 
-/*  Gate Animation  */
+/* Door moving effect */
 .gate-container {
     width: 260px;
     height: 350px;
@@ -253,7 +253,7 @@ h2 {
     z-index: 10;
 }
 
-/*  Game Layout  */
+/* Game page design */
 .game-grid {
     display: grid;
     grid-template-columns: 1fr 1.5fr;
@@ -293,7 +293,7 @@ h2 {
     max-height: 280px;
 }
 
-/*  Dashboard Grid  */
+/* Dashboard design */
 .dashboard-layout {
     display: grid;
     grid-template-columns: 1fr 1.5fr;
@@ -346,7 +346,7 @@ h2 {
     background: var(--olivine);
 }
 
-/*  Mode Circles  */
+/* Level circles */
 .mode-container {
     display: flex;
     justify-content: space-around;
@@ -375,7 +375,7 @@ h2 {
     border-color: var(--amethyst);
 }
 
-/*  Profile Layout  */
+/* Profile page design */
 .profile-layout {
     display: flex;
     align-items: center;
@@ -389,7 +389,7 @@ h2 {
     font-size: 1rem;
 }
 
-/* ── Celebration Overlay ── */
+/* Win effect overlay */
 .celebration-overlay {
     position: fixed;
     top: 0;
@@ -458,7 +458,7 @@ h2 {
     }
 }
 
-/*  Error Message  */
+/* Message for mistakes */
 .error-msg {
     color: #d32f2f;
     margin-top: 10px;
@@ -466,7 +466,7 @@ h2 {
     display: none;
 }
 
-/*  Utility  */
+/* Extra helpers */
 .hidden {
     display: none !important;
 }
@@ -495,7 +495,7 @@ h2 {
     color: #222;
 }
 
-/*  Animations  */
+/* Movements */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -508,14 +508,14 @@ h2 {
     }
 }
 
-/*  Timer  */
+/* Clock style */
 #timer-display {
     font-size: 1.3rem;
     font-weight: 700;
     color: var(--mardi-gras);
 }
 
-/*  Homepage  */
+/* First page styles */
 :root {
     --home-bg-main: #1A0031;
     --home-glow-color: rgba(160, 19, 236, 0.2);
@@ -546,7 +546,7 @@ body.home-body {
     background-image: none;
 }
 
-/* Glow Orbs */
+/* Glowing circles */
 .home-glow-orb {
     position: absolute;
     border-radius: 50%;
@@ -593,7 +593,7 @@ body.home-body {
     z-index: 2;
 }
 
-/* Header Pill */
+/* Top title bar */
 .home-header-pill {
     background: var(--home-pill-bg);
     padding: 18px 48px;
@@ -630,7 +630,7 @@ body.home-body {
     animation: fadeIn 0.8s ease-out 0.2s both;
 }
 
-/* Card Image Area */
+/* Image box */
 .home-image-container {
     width: 200px;
     height: 300px;
@@ -656,7 +656,7 @@ body.home-body {
     animation: bounce 2s infinite ease-in-out;
 }
 
-/* Card Text Area */
+/* Text box */
 .home-text-container {
     text-align: center;
     margin-bottom: 32px;
@@ -679,7 +679,7 @@ body.home-body {
     letter-spacing: 0.5px;
 }
 
-/* Home Button */
+/* Play button */
 .home-explore-btn {
     background: linear-gradient(135deg, rgba(213, 146, 234, 1) 0%, rgba(169, 98, 198, 1) 100%);
     color: var(--home-btn-text);
@@ -706,7 +706,7 @@ body.home-body {
     color: #fff;
 }
 
-/* Footer Loading */
+/* Loading text at bottom */
 .home-footer-loading {
     position: absolute;
     bottom: 40px;
@@ -765,7 +765,7 @@ body.home-body {
     }
 }
 
-/*  Loading Screen  */
+/* Loading page styles */
 :root {
     --loading-bg-main: #1A0031;
     --loading-card-bg: rgba(255, 255, 255, 0.04);
@@ -833,7 +833,7 @@ body.loading-body {
     animation: fadeIn 0.8s ease-out;
 }
 
-/* Double Door Layout */
+/* Door position */
 .loading-door-container {
     width: 260px;
     height: 340px;
@@ -904,7 +904,7 @@ body.loading-body {
     }
 }
 
-/* The Doors - Enhanced with Gradients and Inner Shadows */
+/* Door colors and style */
 .loading-door {
     width: 130px;
     height: 340px;
@@ -917,7 +917,7 @@ body.loading-body {
     transform-style: preserve-3d;
 }
 
-/* Jagged inner edge illusion and Swing Animation */
+/* Door opening effect */
 .loading-door.left {
     transform-origin: left center;
     border-right: 1px dashed var(--loading-door-border);
@@ -958,7 +958,7 @@ body.loading-body {
     left: 8px;
 }
 
-/* Text Area */
+/* Text box */
 .loading-text-container {
     text-align: center;
     margin-top: 10px;
@@ -1003,7 +1003,7 @@ body.loading-body {
     }
 }
 
-/*  Opened Door Animations & Interior UI  */
+/* Effects after door opens */
 
 .lets-go-text {
     position: relative;
@@ -1157,7 +1157,7 @@ body.loading-body {
     }
 }
 
-/*  Closed Door UI Elements  */
+/* Buttons before door opens */
 
 .open-door-btn {
     background: linear-gradient(90deg, #A866BE 0%, #A013EC 100%);
@@ -1184,7 +1184,7 @@ body.loading-body {
     pointer-events: none;
 }
 
-/* Intro Sparkle Animation "Flying Shining Thing" */
+/* Moving sparkle effect */
 .intro-sparkle {
     position: absolute;
     width: 8px;
@@ -1236,7 +1236,7 @@ body.loading-body {
     }
 }
 
-/* 100 Floating Shining Swarm Particles  */
+/* Many floating sparkles */
 
 .sparkle-target {
     position: absolute;
@@ -1281,7 +1281,7 @@ body.loading-body {
     }
 }
 
-/* Raining Shining Particles (Opened Door) */
+/* Sparkles falling like rain */
 
 .rain-container {
     position: absolute;
@@ -1326,7 +1326,7 @@ body.loading-body {
     }
 }
 
-/* Login UI Re-design */
+/* Login page style */
 
 body.auth-body {
     background-color: #1A0031;
@@ -1504,7 +1504,7 @@ body.auth-body {
     }
 }
 
-/* Game Welcome Page Re-design */
+/* Welcome page style */
 
 .welcome-bg-body {
     margin: 0;
@@ -1522,7 +1522,7 @@ body.auth-body {
     background-color: #140A1F;
 }
 
-/* Background Video */
+/* Video for background */
 .video-container {
     position: absolute;
     top: 0;
@@ -1550,7 +1550,7 @@ body.auth-body {
     z-index: -1;
 }
 
-/* Top Navigation */
+/* Menu bar at top */
 .welcome-top-nav {
     width: 100%;
     height: 90px;
@@ -1754,7 +1754,7 @@ body.auth-body {
     background: #B347FF;
 }
 
-/* Bottom Stats */
+/* Score details at bottom */
 .welcome-footer-stats {
     width: 100%;
     display: flex;
@@ -1800,7 +1800,7 @@ body.auth-body {
     }
 }
 
-/* Menu (Player Home) Re-design */
+/* Menu page style */
 
 .petals-container {
     position: absolute;
@@ -2020,7 +2020,7 @@ body.auth-body {
     }
 }
 
-/* Dashboard Low-Fi Recreation */
+/* Dashboard page style */
 
 .dashboard-main-layout {
     flex: 1;
@@ -2048,7 +2048,7 @@ body.auth-body {
     animation: fadeIn 0.8s ease-out;
 }
 
-/* 3-Column Base */
+/* Three column grid */
 .dash-col {
     display: flex;
     flex-direction: column;
@@ -2056,7 +2056,7 @@ body.auth-body {
     justify-content: center;
 }
 
-/* Left Column */
+/* Left side */
 .dash-col-left {
     flex: 1;
     gap: 20px;
@@ -2090,7 +2090,7 @@ body.auth-body {
     text-align: center;
 }
 
-/* Divider */
+/* Middle line */
 .dash-divider {
     width: 1px;
     height: 90%;
@@ -2098,7 +2098,7 @@ body.auth-body {
     align-self: center;
 }
 
-/* Center Column */
+/* Center side */
 .dash-col-center {
     flex: 1.2;
     align-items: flex-start;
@@ -2149,7 +2149,7 @@ body.auth-body {
     box-shadow: inset 0 0 15px rgba(160, 19, 236, 0.2);
 }
 
-/* Right Column (Garden grid) */
+/* Right side with garden */
 .dash-col-right {
     flex: 2;
     justify-content: stretch;
@@ -2177,7 +2177,7 @@ body.auth-body {
     padding-right: 15px;
 }
 
-/* Customizing the scrollbar for the grid container so it perfectly fits wireframe */
+/* Grid scrollbar style */
 .garden-grid-scrollable::-webkit-scrollbar {
     width: 4px;
 }
@@ -2245,7 +2245,7 @@ body.auth-body {
     }
 }
 
-/* Profile Low-Fi Recreation */
+/* Profile page style */
 
 .profile-main-layout {
     flex: 1;
@@ -2272,7 +2272,7 @@ body.auth-body {
     animation: fadeIn 0.8s ease-out;
 }
 
-/* Left Pane (Avatar) */
+/* Left side for picture */
 .prof-col-left {
     display: flex;
     flex-direction: column;
@@ -2340,7 +2340,7 @@ body.auth-body {
     box-shadow: 0 0 15px rgba(160, 19, 236, 0.3);
 }
 
-/* Right Pane (Data grid) */
+/* Right side for data */
 .prof-col-right {
     flex: 1;
     display: flex;
@@ -2405,7 +2405,7 @@ body.auth-body {
     margin-bottom: 25px;
 }
 
-/* Stats 2x2 Layout */
+/* Boxes for score */
 .prof-stats-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -2464,7 +2464,7 @@ body.auth-body {
     font-weight: 500;
 }
 
-/* Progress Bottom Row */
+/* Level bar at bottom */
 .prof-progress-section {
     margin-top: auto;
 }
@@ -2528,7 +2528,7 @@ body.auth-body {
     }
 }
 
-/* Global Floating Action Buttons (FAB) */
+/* Buttons on side */
 .global-fab-container {
     position: fixed;
     bottom: 30px;
@@ -2595,7 +2595,7 @@ body.auth-body {
     }
 }
 
-/* Global Copyright Footer */
+/* Footer text */
 .global-copyright {
     position: fixed;
     bottom: 12px;

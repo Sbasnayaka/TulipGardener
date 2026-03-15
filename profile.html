@@ -12,10 +12,10 @@
 </head>
 
 <body class="welcome-bg-body">
-    <!-- Falling Petals Background (from Menu) -->
+    <!-- Falling petals effect -->
     <div class="petals-container"></div>
 
-    <!-- Top Navigation -->
+    <!-- Top menu bar -->
     <header class="welcome-top-nav">
         <div class="nav-brand">
             <div class="brand-hexagon">
@@ -43,7 +43,7 @@
                 </svg>
                 Dashboard
             </a>
-            <!-- Active Pill -->
+            <!-- Active button for profile -->
             <a href="profile.html" class="nav-item active">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -55,7 +55,7 @@
         </div>
 
         <div class="nav-actions">
-            <!-- Nav Actions Empty / Kept for spacing structure or global consistency -->
+            <!-- Buttons on the right -->
             <button class="icon-btn" onclick="window.location.href='settings.html'" title="Settings">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -76,11 +76,11 @@
         </div>
     </header>
 
-    <!-- Main Content -->
+    <!-- Main page content -->
     <main class="profile-main-layout">
         <div class="profile-glass-card">
 
-            <!-- Left Pane: Avatar Box -->
+            <!-- Left part: Player picture -->
             <div class="prof-col prof-col-left">
                 <div class="prof-avatar-ring">
                     <img id="profile-avatar" src="" alt="Avatar">
@@ -92,7 +92,7 @@
                     </div>
                 </div>
 
-                <!-- 3 Static Decorative Badges -->
+                <!-- Badges the player has -->
                 <div class="prof-badges-row">
                     <div class="p-mini-badge">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#87eb8f" stroke-width="2"
@@ -117,10 +117,10 @@
                 </div>
             </div>
 
-            <!-- Right Pane: Stats Grid -->
+            <!-- Right part: Score boxes -->
             <div class="prof-col prof-col-right">
 
-                <!-- Header Block -->
+                <!-- Name group -->
                 <div class="prof-header-row">
                     <div class="prof-title-block">
                         <h1 id="p-username" class="prof-username-text">Loading...</h1>
@@ -138,10 +138,10 @@
 
                 <div class="prof-divider-line"></div>
 
-                <!-- 2x2 Data Grid -->
+                <!-- Four boxes for data -->
                 <div class="prof-stats-grid">
 
-                    <!-- Card 1 -->
+                    <!-- Current Score box -->
                     <div class="prof-stat-box">
                         <div class="prof-stat-icon-wrapper" style="color: #A013EC;">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -159,7 +159,7 @@
                         <span class="prof-stat-sub">Top 5% this week</span>
                     </div>
 
-                    <!-- Card 2 -->
+                    <!-- Total Tulips box -->
                     <div class="prof-stat-box">
                         <div class="prof-stat-icon-wrapper" style="color: #87eb8f;">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -172,7 +172,7 @@
                         <span class="prof-stat-sub">12 rare species found</span>
                     </div>
 
-                    <!-- Card 3 -->
+                    <!-- Best Record box -->
                     <div class="prof-stat-box">
                         <div class="prof-stat-icon-wrapper" style="color: #64b5f6;">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -186,7 +186,7 @@
                         <span class="prof-stat-sub">Speed run challenge</span>
                     </div>
 
-                    <!-- Card 4 -->
+                    <!-- Player Rank box -->
                     <div class="prof-stat-box">
                         <div class="prof-stat-icon-wrapper" style="color: #ffb74d;">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -210,14 +210,14 @@
         </div>
     </main>
 
-    <!-- Supabase CDN -->
+    <!-- Connect to database -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Architecture -->
+    <!-- Logic files -->
     <script src="js/services/supabaseClient.js"></script>
     <script src="js/services/UserService.js"></script>
     <script src="js/controllers/AuthController.js"></script>
 
-    <!-- Background Petal Rain (Shared logic from menu.html) -->
+    <!-- Make petals fall -->
     <script>
         function createShinyPetals() {
             const container = document.querySelector('.petals-container');
@@ -247,7 +247,7 @@
         }
         createShinyPetals();
 
-        // Core Profile Logic
+        // Show player details on profile
         async function loadProfile() {
             const authed = await AuthController.requireAuth();
             if (!authed) return;
@@ -262,18 +262,18 @@
                 if (profile.avatar_url && profile.avatar_url !== 'null' && profile.avatar_url !== 'undefined') {
                     document.getElementById('profile-avatar').src = decodeURIComponent(profile.avatar_url);
                 } else {
-                    // Fallback visually if no avatar is supplied
+                    // Show a color if no picture
                     document.getElementById('profile-avatar').style.display = 'none';
                     document.querySelector('.prof-avatar-ring').style.background = '#A013EC';
                 }
 
-                // Level calculation imported logically from existing Dashboard
+                // Calculate player level
                 let level = 'Beginner';
                 if (profile.score >= 6) level = 'Pro';
                 else if (profile.score >= 3) level = 'Intermediate';
                 document.getElementById('p-level').innerText = level;
 
-                // Accurate Rank computation: Count players with a higher score than current user
+                // Find my place in leaderboard
                 const { count, error: rankError } = await supabaseClient
                     .from('profiles')
                     .select('score', { count: 'exact', head: true })
@@ -285,7 +285,7 @@
                     document.getElementById('p-rank').innerText = '#--';
                 }
 
-                // Milestone progress calculation Logic
+                // Progress bar logic
                 let nextGoal = 50;
                 if (profile.score > 50) nextGoal = 150;
                 if (profile.score > 150) nextGoal = 500;
@@ -310,7 +310,7 @@
 
         loadProfile();
     </script>
-    <!-- Global Floating Action Buttons -->
+    <!-- Common buttons on side -->
     <div class="global-fab-container">
         <a href="menu.html" class="fab-btn fab-play" title="Play Game">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
@@ -327,7 +327,7 @@
         </a>
     </div>
 
-    <!-- Global Copyright Footer -->
+    <!-- Footer with name and ID -->
     <div class="global-copyright">
         &copy; sanduni kaveesha basnayaka 2541893 game project
     </div>

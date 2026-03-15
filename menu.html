@@ -12,10 +12,10 @@
 </head>
 
 <body class="welcome-bg-body">
-    <!-- Falling Petals Background -->
+    <!-- Falling petals effect -->
     <div class="petals-container"></div>
 
-    <!-- Top Navigation  -->
+    <!-- Top menu bar -->
     <header class="welcome-top-nav">
         <div class="nav-brand">
             <div class="brand-hexagon">
@@ -35,7 +35,7 @@
                 </svg>
                 Menu
             </a>
-            <!-- Dashboard is now inactive -->
+            <!-- Dashboard button -->
             <a href="dashboard.html" class="nav-item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -75,9 +75,9 @@
         </div>
     </header>
 
-    <!-- Main Content -->
+    <!-- Page content -->
     <main class="menu-main-layout">
-        <!-- Glow gradient behind the title -->
+        <!-- Glowing light behind title -->
         <div class="menu-radial-glow"></div>
 
         <h1 class="menu-page-title">
@@ -125,14 +125,14 @@
         </div>
     </main>
 
-    <!-- Auth guard -->
+    <!-- Check if user is logged in -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/services/supabaseClient.js"></script>
     <script src="js/services/UserService.js"></script>
     <script src="js/controllers/AuthController.js"></script>
     <script>AuthController.requireAuth();</script>
 
-    <!-- 100+ Shiny Petal Rain Simulation -->
+    <!-- Logic to make petals fall -->
     <script>
         function createShinyPetals() {
             const container = document.querySelector('.petals-container');
@@ -169,7 +169,7 @@
         }
         createShinyPetals();
     </script>
-    <!-- Global Floating Action Buttons -->
+    <!-- Common buttons on side -->
     <div class="global-fab-container">
         <a href="menu.html" class="fab-btn fab-play" title="Play Game">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
@@ -186,7 +186,7 @@
         </a>
     </div>
 
-    <!-- Global Copyright Footer -->
+    <!-- Footer with name and ID -->
     <div class="global-copyright">
         &copy; sanduni kaveesha basnayaka 2541893 game project
     </div>

@@ -11,16 +11,16 @@
 </head>
 
 <body class="loading-body">
-    <!-- Glowing Orbs Background reused exactly -->
+    <!-- Background with glowing circles -->
     <div class="home-glow-orb top-left"></div>
     <div class="home-glow-orb bottom-right"></div>
     <div class="home-glow-orb center-left"></div>
     <div class="home-glow-orb top-right"></div>
 
-    <!-- Main Container Layout Without Glass Pill -->
+    <!-- Main box -->
     <main class="loading-main-card" id="main-card">
 
-        <!-- Exterior Floating Text (Hidden until open) -->
+        <!-- Text that float -->
         <div class="lets-go-text" id="lets-go-text">
             <svg width="400" height="100" viewBox="0 0 400 100">
                 <path id="curve-letsgo" d="M 20,80 Q 200,10 380,80" fill="transparent" />
@@ -33,17 +33,17 @@
             </svg>
         </div>
 
-        <!-- Double Doors -->
+        <!-- Moving doors -->
         <div class="loading-door-container" id="door-container" style="cursor: pointer;">
-            <!-- Target for the incoming 1000 particles -->
+            <!-- Where the sparkles go -->
             <div id="sparkle-target" class="sparkle-target"></div>
 
-            <!-- Magical core hidden behind the doors -->
+            <!-- Magic box behind doors -->
             <div class="magical-core" id="magical-core">
-                <!-- Raining shining things container -->
+                <!-- Falling sparkles -->
                 <div id="rain-container" class="rain-container"></div>
 
-                <!-- Shimmering particles (added as shining points) -->
+                <!-- Points that shine -->
                 <div class="particles">
                     <div class="particle p1" style="top:20%; left:20%; font-size: 18px;">✦</div>
                     <div class="particle p2" style="top:80%; left:70%; font-size: 12px; animation-delay: 0.5s;">✧</div>
@@ -55,7 +55,7 @@
                     <div class="particle p8" style="top:30%; left:55%; font-size: 18px; animation-delay: 0.7s;">✧</div>
                 </div>
 
-                <!-- Interior Content (Revealed after glow) -->
+                <!-- Buttons inside doors -->
                 <div class="interior-ui" id="interior-ui">
                     <!-- Top Curve Text scaled for 260px width -->
                     <svg class="curve-top" width="260" height="90" viewBox="0 0 260 90">
@@ -82,7 +82,7 @@
                 </div>
             </div>
 
-            <!-- Door Panels with 3D Depth & Gradient -->
+            <!-- The door panels -->
             <div class="loading-door left" id="door-left">
                 <div class="loading-nob"></div>
             </div>
@@ -98,7 +98,7 @@
         const mainCard = document.getElementById('main-card');
         const interiorUi = document.getElementById('interior-ui');
 
-        // Generate Swarm of 1000 particles hiding under the door
+        // Create 1000 sparkles
         function createSwarm() {
             const container = document.getElementById('sparkle-target');
             for (let i = 0; i < 1000; i++) {
@@ -119,7 +119,7 @@
             }
         }
 
-        // Generate Raining shining things
+        // Create falling sparkles
         function createRain() {
             const container = document.getElementById('rain-container');
             for (let i = 0; i < 40; i++) {
@@ -140,20 +140,21 @@
             }
         }
 
-        // Initialize swarm on load
+        // Start sparkles when page load
         window.addEventListener('DOMContentLoaded', createSwarm);
 
+        // Function to open the doors
         function triggerOpen() {
             // Prevent double click
             if (mainCard.classList.contains('is-open')) return;
 
-            // Trigger door swing
+            // Swing the doors open
             mainCard.classList.add('is-open');
 
-            // Trigger raining shining things
+            // Start the sparkle rain
             createRain();
 
-            // Show UI buttons after door opens
+            // Show buttons after door open
             setTimeout(() => {
                 interiorUi.classList.add('visible');
             }, 1000); // reduced delay since glow is gone
@@ -161,7 +162,7 @@
 
         doorContainer.addEventListener('click', triggerOpen);
     </script>
-    <!-- Global Floating Action Buttons -->
+    <!-- Common buttons on side -->
     <div class="global-fab-container">
         <a href="menu.html" class="fab-btn fab-play" title="Play Game">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
@@ -178,7 +179,7 @@
         </a>
     </div>
 
-    <!-- Global Copyright Footer -->
+    <!-- Footer with name and ID -->
     <div class="global-copyright">
         &copy; sanduni kaveesha basnayaka 2541893 game project
     </div>
