@@ -1,8 +1,7 @@
-/**
- * Handles global background music across the MPA (Multi-Page Application).
- * Uses sessionStorage to persist the playback time between page loads,
- * creating the illusion of a single continuous track.
- */
+//Handles global background music across the MPA (Multi-Page Application).
+//Uses sessionStorage to persist the playback time between page loads,
+//creating the illusion of a single continuous track.
+
 class AudioController {
     constructor() {
         this.audio = new Audio('assets/background song.mp3');

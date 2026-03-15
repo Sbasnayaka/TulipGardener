@@ -1,17 +1,12 @@
-/**
- * SINGLE RESPONSIBILITY: Handle authentication UI interactions.
- * 
- * LOW COUPLING: This controller talks to UserService methods.
- *               It does NOT know about Supabase directly.
- *               It does NOT contain any database logic.
- */
+//SINGLE RESPONSIBILITY: Handle authentication UI interactions.
+//LOW COUPLING: This controller talks to UserService methods.
+//Does NOT know about Supabase directly.
+//Does NOT contain any database logic.
 
 class AuthController {
 
-    /**
-     * Handle the Sign Up form submission.
-     * Called from auth.html's form onsubmit.
-     */
+    //Handle the Sign Up form submission.
+    //Called from auth.html's form onsubmit.
     static async handleSignUp(username, password) {
         try {
             const result = await UserService.signUp(username, password);
@@ -24,10 +19,8 @@ class AuthController {
         }
     }
 
-    /**
-     * Handle the Login form submission.
-     * Called from auth.html's form onsubmit.
-     */
+    //Handle the Login form submission.
+    //Called from auth.html's form onsubmit.
     static async handleLogin(username, password) {
         try {
             await UserService.signIn(username, password);
@@ -42,9 +35,7 @@ class AuthController {
         }
     }
 
-    /**
-     * Handle logout.
-     */
+    //Handle logout.
     static async handleLogout() {
         try {
             await UserService.signOut();
@@ -54,9 +45,7 @@ class AuthController {
         }
     }
 
-    /**
-     * Check if user is logged in, redirect to index if not.
-     */
+    //Check if user is logged in, redirect to index if not.
     static async requireAuth() {
         const user = await UserService.getCurrentUser();
         if (!user) {
@@ -66,10 +55,8 @@ class AuthController {
         return true;
     }
 
-    /**
-     * Listen for auth changes (like token refreshes or actual sign outs) 
-     * to manage session state globally without disruptive redirects on network blips.
-     */
+    //Listen for auth changes (like token refreshes or actual sign outs) 
+    //to manage session state globally without disruptive redirects on network blips.
     static initAuthListener() {
         supabaseClient.auth.onAuthStateChange((event, session) => {
             // Only redirect if explicitly signed out or user deleted
@@ -81,7 +68,7 @@ class AuthController {
                     window.location.href = 'index.html';
                 }
             }
-            // We ignore INITIAL_SESSION or TOKEN_REFRESHED to avoid unnecessary redirects
+            //  ignore INITIAL_SESSION or TOKEN_REFRESHED to avoid unnecessary redirects
         });
     }
 }

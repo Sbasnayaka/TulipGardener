@@ -1,19 +1,15 @@
-/**
- * SINGLE RESPONSIBILITY: All user-related operations (Auth + Profile Data).
- * 
- * HIGH COHESION: Everything about the "User" concept lives here.
- * LOW COUPLING: This service only depends on `supabaseClient`. 
- *               Controllers call these methods without knowing Supabase internals.
- */
+//SINGLE RESPONSIBILITY: All user-related operations (Auth + Profile Data).
+//HIGH COHESION: Everything about the "User" concept lives here.
+//LOW COUPLING: This service only depends on `supabaseClient`. 
+//Controllers call these methods without knowing Supabase internals.
+
 
 class UserService {
 
-    /**
-     * Sign up a new user with email and password.
-     * Also creates a profile row in the `profiles` table.
-     */
+    //Sign up a new user with email and password.
+    //Also creates a profile row in the `profiles` table.
     static async signUp(username, password) {
-        // 0. Check for duplicate username first to prevent dangling auth users
+        // Check for duplicate username first to prevent dangling auth users
         const { data: existingUser, error: checkError } = await supabaseClient
             .from('profiles')
             .select('username')
@@ -63,9 +59,7 @@ class UserService {
         };
     }
 
-    /**
-     * Sign in an existing user.
-     */
+    //Sign in an existing user.
     static async signIn(username, password) {
         const dummyEmail = `${username}@tulipgardener.local`;
         const { data, error } = await supabaseClient.auth.signInWithPassword({
@@ -82,9 +76,7 @@ class UserService {
         return data;
     }
 
-    /**
-     * Get the currently logged-in user's profile data.
-     */
+    //Get the currently logged-in user's profile data.
     static async getProfile() {
         const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
         if (sessionError || !session) return null;
@@ -101,9 +93,7 @@ class UserService {
         return data;
     }
 
-    /**
-     * Update the user's score. Increments by 1 and updates best_record if needed (fastest speed in seconds).
-     */
+    //Update the user's score. Increments by 1 and updates best_record if needed (fastest speed in seconds).
     static async incrementScore(timeTaken) {
         const profile = await this.getProfile();
         if (!profile) throw new Error('No profile found');
@@ -128,17 +118,13 @@ class UserService {
         return { score: newScore, bestRecord: newBest };
     }
 
-    /**
-     * Sign out the current user.
-     */
+    //Sign out the current user.
     static async signOut() {
         const { error } = await supabaseClient.auth.signOut();
         if (error) throw error;
     }
 
-    /**
-     * Check if a user is currently logged in.
-     */
+    //Check if a user is currently logged in.
     static async getCurrentUser() {
         const { data: { session }, error } = await supabaseClient.auth.getSession();
         if (error || !session) return null;

@@ -1,10 +1,7 @@
-/**
- * SINGLE RESPONSIBILITY: Manage the game loop, timer, and scoring.
- * 
- * LOW COUPLING: Uses HeartApiService for puzzles, UserService for scores.
- *               Does NOT directly access Supabase or the Heart API URL.
- * HIGH COHESION: All game-related logic (timer, answer checking, celebration) is here.
- */
+//SINGLE RESPONSIBILITY: Manage the game loop, timer, and scoring.
+//LOW COUPLING: Uses HeartApiService for puzzles, UserService for scores.
+//Does NOT directly access Supabase or the Heart API URL.
+//HIGH COHESION: All game-related logic (timer, answer checking, celebration) is here.
 
 class GameController {
 
@@ -13,12 +10,10 @@ class GameController {
         this.currentSolution = null;
         this.timerInterval = null;
         this.timeLeft = 0;
-        this.overlayActive = false; // Prevent double overlays
+        this.overlayActive = false; 
     }
 
-    /**
-     * Initialize the game: fetch puzzle and start timer.
-     */
+    //Initialize the game: fetch puzzle and start timer.
     async init() {
         // Set timer based on mode
         if (this.mode === 'intermediate') {
@@ -44,9 +39,7 @@ class GameController {
         }
     }
 
-    /**
-     * Fetch a puzzle from the HeartApiService.
-     */
+    //Fetch a puzzle from the HeartApiService.
     async loadPuzzle() {
         try {
             const puzzle = await HeartApiService.getPuzzle();
@@ -69,9 +62,7 @@ class GameController {
         }
     }
 
-    /**
-     * Start the countdown timer.
-     */
+    //Start the countdown timer.
     startTimer() {
         this.updateTimerDisplay();
         this.timerInterval = setInterval(() => {
@@ -84,9 +75,7 @@ class GameController {
         }, 1000);
     }
 
-    /**
-     * Show the "Time's Up!" blur overlay and countdown before reload.
-     */
+    //Show the "Time's Up!" blur overlay and countdown before reload.
     showTimesUp() {
         // If incorrect overlay is already showing, just reload silently
         if (this.overlayActive) {
@@ -112,9 +101,7 @@ class GameController {
         }
     }
 
-    /**
-     * Update the timer text on screen.
-     */
+    //Update the timer text on screen.
     updateTimerDisplay() {
         const timerEl = document.getElementById('timer-display');
         if (this.mode === 'beginner') {
@@ -124,9 +111,7 @@ class GameController {
         }
     }
 
-    /**
-     * Check the user's answer against the solution.
-     */
+    //Check the user's answer against the solution.
     async checkAnswer(userAnswer) {
         if (userAnswer === null || userAnswer === '') return;
 
@@ -152,7 +137,7 @@ class GameController {
                 this.showCelebration(result.score);
             } catch (error) {
                 console.error('Score update failed:', error);
-                this.showCelebration(0); // Still celebrate even if save fails
+                this.showCelebration(0); 
             }
         } else {
             this.showIncorrect();
@@ -161,13 +146,11 @@ class GameController {
         }
     }
 
-    /**
-     * Show the "Incorrect!" blur overlay briefly and then fade it out.
-     */
+    //Show the "Incorrect!" blur overlay briefly and then fade it out.
     showIncorrect() {
         const overlay = document.getElementById('incorrect-overlay');
         if (!overlay) return;
-        this.overlayActive = true; // Block timesup overlay from stacking
+        this.overlayActive = true; 
         overlay.style.display = 'flex';
         overlay.style.opacity = '1';
         // Auto-dismiss after 1.8 seconds with a fade
@@ -178,14 +161,12 @@ class GameController {
                 overlay.style.display = 'none';
                 overlay.style.transition = '';
                 overlay.style.opacity = '1';
-                this.overlayActive = false; // Allow future overlays again
+                this.overlayActive = false; 
             }, 500);
         }, 1800);
     }
 
-    /**
-     * Show the celebration overlay animation.
-     */
+    //Show the celebration overlay animation.
     showCelebration(newScore) {
         const overlay = document.getElementById('celebration');
         const scoreEl = document.getElementById('celebration-score');
