@@ -530,13 +530,15 @@
         <a href="menu.html" class="lb-action-btn">Lets grow more tulipssss</a>
     </div>
 
-    <!-- Connect to database -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <!-- Firebase Compat Library -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="js/services/supabaseClient.js"></script>
     <script src="js/services/UserService.js"></script>
     <script src="js/controllers/AuthController.js"></script>
 
-    <script>
+        <script>
         function formatNumber(num) {
             return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
@@ -559,14 +561,14 @@
                     headerAvatar.style.display = 'block';
                 }
 
-                // Find my rank position
+                // Find my rank position (FIREBASE UPDATE)
                 let myRank = "--";
-                const { count, error: rankError } = await supabaseClient
-                    .from('profiles')
-                    .select('*', { count: 'exact', head: true })
-                    .gt('score', userScore);
-
-                if (!rankError && count !== null) {
+                try {
+                    const rankQuery = await db.collection('users')
+                        .where('score', '>', userScore)
+                        .get();
+                    
+                    const count = rankQuery.size;
                     myRank = count + 1;
                     document.getElementById('my-rank').innerText = `#${formatNumber(myRank)}`;
 
@@ -579,28 +581,28 @@
                     if (myRank <= 100) {
                         document.getElementById('my-score-sub').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> try to grow moree!`;
                     }
+                } catch (rankErr) {
+                    console.error('Rank fetch error:', rankErr);
                 }
 
-                // Removed threshold logic
-
-                // Get top 50 players
-                const { data, error } = await supabaseClient
-                    .from('profiles')
-                    .select('username, score, avatar_url')
-                    .order('score', { ascending: false })
-                    .limit(50);
-
-                if (error) throw error;
+                // Get top 50 players (FIREBASE UPDATE)
+                const querySnapshot = await db.collection('users')
+                    .orderBy('score', 'desc')
+                    .limit(50)
+                    .get();
 
                 const container = document.getElementById('leaderboard-container');
                 container.innerHTML = '';
 
-                if (data.length === 0) {
+                if (querySnapshot.empty) {
                     container.innerHTML = '<p style="text-align:center; color:#ccc; padding: 20px;">No players yet.</p>';
                     return;
                 }
 
-                data.forEach((p, index) => {
+                let index = 0; // We track the index manually because Firebase uses .forEach
+
+                querySnapshot.forEach((doc) => {
+                    const p = doc.data();
                     const row = document.createElement('div');
                     row.className = 'lb-row';
 
@@ -639,6 +641,7 @@
                         </div>
                     `;
                     container.appendChild(row);
+                    index++; // Increment the manual index for the loop
                 });
 
             } catch (err) {

@@ -58,20 +58,17 @@ class AuthController {
     // This listener check if user log out in another tab
     // Or if the session end
     static initAuthListener() {
-        supabaseClient.auth.onAuthStateChange((event, session) => {
-            // If user sign out, go back to home page
-            if (event === 'SIGNED_OUT' || event === 'USER_DELETED') {
-                const protectedPages = ['welcome.html', 'dashboard.html', 'profile.html', 'game.html'];
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                const protectedPages = ['welcome.html', 'dashboard.html', 'profile.html', 'game.html', 'menu.html', 'leaderboard.html'];
                 const currentPage = window.location.pathname.split('/').pop() || '';
 
                 if (protectedPages.includes(currentPage)) {
                     window.location.href = 'index.html';
                 }
             }
-            //  ignore INITIAL_SESSION or TOKEN_REFRESHED to avoid unnecessary redirects
         });
     }
 }
 
-// Start the listener when the page load
 AuthController.initAuthListener();

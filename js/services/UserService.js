@@ -1,133 +1,113 @@
 // This file handle the user data and login/signup
 // Each file do one thing (Cohesion)
-// This file only use supabaseClient (Low Coupling)
+// This file only use firebaseClient (Low Coupling)
 // Controllers call these functions to get player data
 
 
 class UserService {
 
-    // Create a new user account
-    // It also save a profile in the table
     static async signUp(username, password) {
-        // We check if username already exist
-        const { data: existingUser, error: checkError } = await supabaseClient
-            .from('profiles')
-            .select('username')
-            .eq('username', username)
-            .maybeSingle();
-
-        if (checkError && checkError.code !== 'PGRST116') {
-            // PGRST116 means user not found, that is ok
-            // If it's another error, throw it.
-            throw checkError;
-        }
-
-        if (existingUser) {
+        const lowerUsername = username.toLowerCase();
+        
+        // 1. Check if username exists using a dedicated collection
+        const usernameDoc = await db.collection('usernames').doc(lowerUsername).get();
+        if (usernameDoc.exists) {
             throw new Error("Username is already taken. Please choose another one.");
         }
 
-        const dummyEmail = `${username}@tulipgardener.local`;
+        const dummyEmail = `${lowerUsername}@tulipgardener.local`;
 
-        // Create the user in Supabase Auth
-        const { data, error } = await supabaseClient.auth.signUp({
-            email: dummyEmail,
-            password: password,
-        });
+        // 2. Create the user in Firebase Auth
+        const userCredential = await auth.createUserWithEmailAndPassword(dummyEmail, password);
+        const user = userCredential.user;
 
-        if (error) throw error;
-
-        // Get a nice avatar for the player
+        // 3. Get avatar
         const avatarUrl = `https://api.dicebear.com/7.x/pixel-art/svg?seed=${encodeURIComponent(username)}`;
 
-        // Save the player profile in database
-        const { error: profileError } = await supabaseClient
-            .from('profiles')
-            .insert({
-                id: data.user.id,
-                username: username,
-                avatar_url: avatarUrl,
-                score: 0,
-                best_record: 0
-            });
+        // 4. Save profile in Firestore
+        const batch = db.batch();
+        
+        // Save to users collection
+        const userRef = db.collection('users').doc(user.uid);
+        batch.set(userRef, {
+            username: username,
+            avatar_url: avatarUrl,
+            score: 0,
+            best_record: 0
+        });
 
-        if (profileError) throw profileError;
+        // Save to usernames collection (to prevent duplicates)
+        const usernameRef = db.collection('usernames').doc(lowerUsername);
+        batch.set(usernameRef, { uid: user.uid });
+
+        await batch.commit();
 
         return {
-            user: data.user,
+            user: user,
             username: username,
             avatarUrl: avatarUrl
         };
     }
 
-    // Login an existing user
     static async signIn(username, password) {
-        const dummyEmail = `${username}@tulipgardener.local`;
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
-            email: dummyEmail,
-            password: password,
-        });
-
-        if (error) {
-            if (error.message.includes("Invalid login credentials") || error.message.includes("Invalid Date")) {
+        const dummyEmail = `${username.toLowerCase()}@tulipgardener.local`;
+        try {
+            const userCredential = await auth.signInWithEmailAndPassword(dummyEmail, password);
+            return userCredential.user;
+        } catch (error) {
+            if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
                 throw new Error("Invalid username or password");
             }
             throw error;
         }
-        return data;
     }
 
-    // Get the profile of the current player
     static async getProfile() {
-        const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
-        if (sessionError || !session) return null;
+        const user = auth.currentUser;
+        if (!user) return null;
 
-        const user = session.user;
-
-        const { data, error } = await supabaseClient
-            .from('profiles')
-            .select('*')
-            .eq('id', user.id)
-            .single();
-
-        if (error) throw error;
-        return data;
+        const doc = await db.collection('users').doc(user.uid).get();
+        if (!doc.exists) throw new Error("Profile not found");
+        
+        // Return data + id
+        return { id: doc.id, ...doc.data() };
     }
 
-    // Update the player score and record
     static async incrementScore(timeTaken) {
-        const profile = await this.getProfile();
-        if (!profile) throw new Error('No profile found');
+        const user = auth.currentUser;
+        if (!user) throw new Error('No user logged in');
 
-        const newScore = profile.score + 1;
+        const userRef = db.collection('users').doc(user.uid);
+        
+        // Use a transaction to safely update score and best record
+        return await db.runTransaction(async (transaction) => {
+            const doc = await transaction.get(userRef);
+            if (!doc.exists) throw "Document does not exist!";
 
-        // Save the best time for solving puzzle
-        let newBest = profile.best_record;
-        if (timeTaken !== undefined) {
-            // Uninitialized or strict improvement
-            if (newBest === 0 || timeTaken < newBest) {
+            const currentScore = doc.data().score || 0;
+            const currentBest = doc.data().best_record || 0;
+            
+            const newScore = currentScore + 1;
+            let newBest = currentBest;
+            
+            if (timeTaken !== undefined && (newBest === 0 || timeTaken < newBest)) {
                 newBest = timeTaken;
             }
-        }
 
-        const { error } = await supabaseClient
-            .from('profiles')
-            .update({ score: newScore, best_record: newBest })
-            .eq('id', profile.id);
+            transaction.update(userRef, { 
+                score: newScore, 
+                best_record: newBest 
+            });
 
-        if (error) throw error;
-        return { score: newScore, bestRecord: newBest };
+            return { score: newScore, bestRecord: newBest };
+        });
     }
 
-    // Logout the player
     static async signOut() {
-        const { error } = await supabaseClient.auth.signOut();
-        if (error) throw error;
+        await auth.signOut();
     }
 
-    // Check if player is logged in now
     static async getCurrentUser() {
-        const { data: { session }, error } = await supabaseClient.auth.getSession();
-        if (error || !session) return null;
-        return session.user;
+        return auth.currentUser; // Firebase keeps this cached
     }
 }
