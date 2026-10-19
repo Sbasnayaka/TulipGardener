@@ -49,7 +49,10 @@ class AuthController {
     static async requireAuth() {
         const user = await UserService.getCurrentUser();
         if (!user) {
-            window.location.href = 'index.html';
+            // Only redirect if we are not already on the index page (prevents infinite loops)
+            if (!window.location.href.includes('index.html')) {
+                window.location.href = 'index.html';
+            }
             return false;
         }
         return true;
@@ -60,7 +63,7 @@ class AuthController {
     static initAuthListener() {
         auth.onAuthStateChanged((user) => {
             if (!user) {
-                const protectedPages = ['welcome.html', 'dashboard.html', 'profile.html', 'game.html', 'menu.html', 'leaderboard.html'];
+                const protectedPages = ['welcome.html', 'dashboard.html', 'profile.html', 'game.html', 'menu.html', 'leaderboard.html', 'settings.html'];
                 const currentPage = window.location.pathname.split('/').pop() || '';
 
                 if (protectedPages.includes(currentPage)) {
