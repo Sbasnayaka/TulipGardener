@@ -215,7 +215,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <!-- Logic files -->
-    <script src="js/services/supabaseClient.js"></script>
+    <script src="js/services/firebaseClient.js"></script>
     <script src="js/services/UserService.js"></script>
     <script src="js/controllers/AuthController.js"></script>
 
@@ -275,15 +275,15 @@
                 else if (profile.score >= 3) level = 'Intermediate';
                 document.getElementById('p-level').innerText = level;
 
-                // Find my place in leaderboard
-                const { count, error: rankError } = await supabaseClient
-                    .from('profiles')
-                    .select('score', { count: 'exact', head: true })
-                    .gt('score', profile.score || 0);
-
-                if (!rankError) {
-                    document.getElementById('p-rank').innerText = '#' + ((count || 0) + 1);
-                } else {
+                // Find my place in leaderboard (FIREBASE UPDATE)
+                try {
+                    const rankQuery = await db.collection('users')
+                        .where('score', '>', profile.score || 0)
+                        .get();
+                    
+                    document.getElementById('p-rank').innerText = '#' + (rankQuery.size + 1);
+                } catch (rankErr) {
+                    console.error('Rank fetch error:', rankErr);
                     document.getElementById('p-rank').innerText = '#--';
                 }
 
@@ -312,6 +312,7 @@
 
         loadProfile();
     </script>
+
     <!-- Common buttons on side -->
     <div class="global-fab-container">
         <a href="menu.html" class="fab-btn fab-play" title="Play Game">
