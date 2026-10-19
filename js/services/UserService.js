@@ -3,7 +3,6 @@
 // This file only use firebaseClient (Low Coupling)
 // Controllers call these functions to get player data
 
-
 class UserService {
 
     static async signUp(username, password) {
@@ -107,7 +106,13 @@ class UserService {
         await auth.signOut();
     }
 
-    static async getCurrentUser() {
-        return auth.currentUser; // Firebase keeps this cached
+    // UPDATED: This now waits for Firebase to check the local cache before returning
+    static getCurrentUser() {
+        return new Promise((resolve) => {
+            const unsubscribe = auth.onAuthStateChanged((user) => {
+                unsubscribe(); // Stop listening after the first check
+                resolve(user); // Returns the user if logged in, or null if not
+            });
+        });
     }
 }
